@@ -1,0 +1,106 @@
+{
+  "root": true,
+  "ignorePatterns": ["projects/**/*"],
+  "env": {
+    "browser": true,
+    "es2022": true,
+    "jasmine": true
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": 12,
+        "sourceType": "module",
+        "project": ["tsconfig.json", "tsconfig.spec.json"]
+      },
+      "settings": {
+        "angular": {
+          "version": "detect"
+        }
+      },
+      "extends": [
+        "standard",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "prettier"
+      ],
+      "plugins": [
+        "@typescript-eslint",
+        "@angular-eslint",
+        "prettier",
+        "import-helpers"
+      ],
+      "rules": {
+        "no-useless-constructor": "off",
+        "@typescript-eslint/no-useless-constructor": ["warn"],
+        "prettier/prettier": "error",
+        "arrow-body-style": "off",
+        "prefer-arrow-callback": "off",
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ],
+        "import-helpers/order-imports": [
+          "warn",
+          {
+            "newlinesBetween": "always",
+            // new line between groups
+            "groups": [
+              "/^angular/",
+              "module",
+              "/^primeng/",
+              "/^@shared/",
+              "/.module$/",
+              "/.service$/",
+              "/.component$/",
+              "/.model$/",
+              ["parent", "sibling", "index"]
+            ],
+            "alphabetize": {
+              "order": "asc",
+              "ignoreCase": true
+            }
+          }
+        ],
+        "import/prefer-default-export": "off"
+      }
+    },
+    {
+      "files": ["*.html"],
+      "plugins": ["@angular-eslint/template"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "rules": {}
+    },
+    {
+      "files": ["*.html"],
+      "excludedFiles": ["*inline-template-*.component.html"],
+      "extends": ["plugin:prettier/recommended"],
+      "rules": {
+        // NOTE: WE ARE OVERRIDING THE DEFAULT CONFIG TO ALWAYS SET THE PARSER TO ANGULAR (SEE BELOW)
+        "prettier/prettier": [
+          "error",
+          {
+            "parser": "angular"
+          }
+        ]
+      }
+    }
+  ]
+}
