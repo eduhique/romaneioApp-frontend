@@ -1,0 +1,104 @@
+@import '../../../../assets/styles/variables';
+
+:host {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: $gray-50;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .card {
+    flex-grow: 1;
+    margin: 5rem;
+    padding: 2rem;
+    max-width: 1100px;
+
+    background: $surface-card;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+    border-radius: $border-radius;
+
+    .span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-bottom: 2px solid $error-color;
+      width: fit-content;
+
+      .icon,
+      .text {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: $error-color;
+      }
+    }
+
+    > h1 {
+      margin: 2rem 0 1.5rem 0;
+
+      color: #272727;
+      font-size: 2rem;
+      word-wrap: break-word;
+    }
+
+    > h3 {
+      color: $text-color;
+      font-size: 1.25rem;
+      font-weight: 400;
+      word-wrap: break-word;
+      text-align: justify;
+      margin-bottom: 3rem;
+    }
+
+    .button {
+      display: flex;
+      justify-content: flex-end;
+
+      gap: 1rem;
+      padding: 2rem 1rem 0 1rem;
+
+      border-top: 1px solid $surface-300;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .card {
+      margin: 10rem;
+      padding: 3rem;
+
+      .span {
+        border-bottom: 3px solid $error-color;
+
+        .icon,
+        .text {
+          font-size: 2rem;
+          font-weight: 500;
+        }
+      }
+
+      > h1 {
+        font-size: 3rem;
+
+      }
+
+      .button {
+        gap: 1.5rem;
+
+        ::ng-deep {
+          .p-button {
+            font-size: 1.25rem;
+            padding: 0.625rem 1.25rem;
+          }
+        }
+      }
+    }
+  }
+}

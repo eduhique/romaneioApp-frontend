@@ -39,13 +39,14 @@
         "no-useless-constructor": "off",
         "@typescript-eslint/no-useless-constructor": ["warn"],
         "prettier/prettier": "error",
+        "@typescript-eslint/no-floating-promises": "off",
         "arrow-body-style": "off",
         "prefer-arrow-callback": "off",
         "@angular-eslint/directive-selector": [
           "error",
           {
             "type": "attribute",
-            "prefix": "app",
+            "prefix": "romaneio",
             "style": "camelCase"
           }
         ],
@@ -53,7 +54,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "app",
+            "prefix": "romaneio",
             "style": "kebab-case"
           }
         ],
@@ -66,7 +67,9 @@
               "/^angular/",
               "module",
               "/^primeng/",
+              "/^@core/",
               "/^@shared/",
+              "/^@pages/",
               "/.module$/",
               "/.service$/",
               "/.component$/",
