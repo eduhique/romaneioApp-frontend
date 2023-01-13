@@ -1,0 +1,100 @@
+<romaneio-new-users-management (sendUser)="submitUser($event)">
+</romaneio-new-users-management>
+<div class="content-table">
+  <p-table
+    #table
+    [filterDelay]="0"
+    [globalFilterFields]="[
+      'name',
+      'nickname',
+      'active',
+      'function',
+      'createdDate',
+      'lastUpdate'
+    ]"
+    [lazy]="true"
+    [loading]="isLoading"
+    [paginator]="true"
+    [rowHover]="true"
+    [rows]="10"
+    [scrollable]="true"
+    [showCurrentPageReport]="true"
+    [totalRecords]="qtdRegistros"
+    [value]="users"
+    currentPageReportTemplate="Mostrando de {first} até {last} de {totalRecords} registros"
+    dataKey="id"
+    scrollHeight="660px"
+  >
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+        <col style="min-width: 10rem" />
+        <col style="min-width: 9rem" />
+        <col style="min-width: 9rem" />
+        <col style="min-width: 10rem" />
+        <col style="min-width: 12rem" />
+        <col style="min-width: 12.5rem" />
+        <col style="min-width: 5rem" />
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">
+          Nome
+          <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="nickname">
+          Username
+          <p-sortIcon field="nickname"></p-sortIcon>
+        </th>
+        <th pSortableColumn="active">
+          Habilitado
+          <p-sortIcon field="active"></p-sortIcon>
+        </th>
+        <th pSortableColumn="function">
+          Função
+          <p-sortIcon field="function"></p-sortIcon>
+        </th>
+        <th pSortableColumn="createdDate">
+          Data de Criação
+          <p-sortIcon field="createdDate"></p-sortIcon>
+        </th>
+        <th pSortableColumn="lastUpdate">
+          última Atualização
+          <p-sortIcon field="lastUpdate"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template let-user pTemplate="body">
+      <tr>
+        <td>{{ user.name }}</td>
+        <td>{{ user.nickname }}</td>
+        <td>
+          <romaneio-function-label
+            [label]="user.active ? 'Ativo' : 'Inativo'"
+          ></romaneio-function-label>
+        </td>
+        <td>
+          <romaneio-function-label
+            [label]="user.function"
+          ></romaneio-function-label>
+        </td>
+        <td>{{ user.createdDate.toLocaleString() }}</td>
+        <td>{{ user.lastUpdate.toLocaleString() }}</td>
+        <td>
+          <button
+            class="p-button-rounded p-button-success"
+            icon="pi pi-pencil"
+            pButton
+            pRipple
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        No total há {{ qtdRegistros }} usuários.
+      </div>
+    </ng-template>
+  </p-table>
+</div>

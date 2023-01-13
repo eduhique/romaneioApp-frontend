@@ -1,0 +1,131 @@
+<p-toolbar>
+  <ng-template pTemplate="left">
+    <button
+      (click)="openModal()"
+      icon="pi pi-plus"
+      label="Novo Usuário"
+      pButton
+      pRipple
+    ></button>
+  </ng-template>
+</p-toolbar>
+
+<p-dialog [(visible)]="modal" [modal]="true" header="Novo Usuário">
+  <ng-template pTemplate="content">
+    <span class="field">
+      <label for="name">Nome</label>
+      <input
+        [(ngModel)]="user.name"
+        autofocus
+        id="name"
+        pInputText
+        required
+        type="text"
+      />
+      <small *ngIf="submitted && !user.name" class="invalid">
+        Nome é Obrigatório.
+      </small>
+    </span>
+    <div class="field">
+      <label for="Nickname">Nickname</label>
+      <input
+        [(ngModel)]="user.nickname"
+        [pKeyFilter]="blockSpace"
+        id="Nickname"
+        pInputText
+        required
+        type="text"
+      />
+      <small *ngIf="submitted && !user.nickname" class="invalid">
+        Nickname é Obrigatório.
+      </small>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <p-password
+        [(ngModel)]="user.password"
+        [toggleMask]="true"
+        id="password"
+        promptLabel="Insira uma Senha"
+        required
+      >
+        <ng-template pTemplate="footer">
+          <p-divider></p-divider>
+          <p class="mt-2">Requisitos</p>
+          <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+            <li [class]="validPassword() ? 'pass-success' : 'pass-invalid'">
+              <p
+                [class]="
+                  validPassword() ? 'pi pi-fw pi-check' : 'pi pi-fw pi-times'
+                "
+              ></p>
+              No mínimo 6 caracteres
+            </li>
+          </ul>
+        </ng-template>
+      </p-password>
+    </div>
+
+    <div class="field">
+      <label>Função</label>
+      <div class="radio-grid">
+        <div class="radio-admin">
+          <p-radioButton
+            [(ngModel)]="user.function"
+            [value]="getAdmin()"
+            id="category1"
+            name="função"
+          ></p-radioButton>
+          <label for="category1">Administrador</label>
+        </div>
+        <div class="radio-manager">
+          <p-radioButton
+            [(ngModel)]="user.function"
+            [value]="getManager()"
+            id="category2"
+            name="função"
+          ></p-radioButton>
+          <label for="category2">Gerente</label>
+        </div>
+        <div class="radio-confer">
+          <p-radioButton
+            [(ngModel)]="user.function"
+            [value]="getConfer()"
+            id="category3"
+            name="função"
+          ></p-radioButton>
+          <label for="category3">Conferente</label>
+        </div>
+        <div class="radio-register">
+          <p-radioButton
+            [(ngModel)]="user.function"
+            [value]="getRegister()"
+            id="category4"
+            name="função"
+          ></p-radioButton>
+          <label for="category4">Caixa</label>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      (click)="hiddenModal()"
+      class="p-button-text"
+      icon="pi pi-times"
+      label="Cancelar"
+      pButton
+      pRipple
+    ></button>
+    <button
+      (click)="submitUser()"
+      [disabled]="!isValid()"
+      icon="pi pi-check"
+      label="Salvar"
+      pButton
+      pRipple
+    ></button>
+  </ng-template>
+</p-dialog>

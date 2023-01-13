@@ -1,0 +1,120 @@
+@import '../../../../../assets/styles/variables';
+
+:host ::ng-deep {
+  .p-toolbar {
+    margin-bottom: 1.5rem;
+
+    .p-toolbar-group-start {
+      .p-button {
+        color: #fff;
+        background: $success-color;
+        border-color: $success-color;
+      }
+    }
+  }
+
+  .p-dialog {
+    width: 100%;
+
+    max-width: 500px;
+
+    .p-dialog-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .field {
+        display: block;
+
+        > label {
+          margin-bottom: 1rem;
+        }
+
+        > input {
+          width: 100%;
+        }
+
+        .invalid {
+          color: $error-color;
+        }
+
+        .p-password {
+          width: 100%;
+
+          .p-inputtext {
+            width: 100%;
+          }
+
+          .p-password-panel {
+            > ul {
+              margin-top: 0.25rem;
+
+              .pass-success {
+                color: $success-color;
+              }
+
+              .pass-invalid {
+                color: $error-color;
+              }
+
+              > li {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+              }
+            }
+          }
+        }
+
+        .radio-grid {
+          width: 100%;
+          display: grid;
+          grid-template-areas:
+            'admin    confer'
+            'manager register';
+          gap: 0.5rem;
+
+          .radio-admin {
+            grid-area: admin;
+
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+          }
+
+          .radio-manager {
+            grid-area: manager;
+
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+          }
+
+          .radio-confer {
+            grid-area: confer;
+
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+          }
+
+          .radio-register {
+            grid-area: register;
+
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+          }
+        }
+      }
+    }
+
+    .p-dialog-footer {
+      .p-button.p-button-text {
+        background: transparent;
+        color: $error-color;
+        border-color: transparent;
+      }
+    }
+  }
+}

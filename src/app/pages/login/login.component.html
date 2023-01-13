@@ -1,1 +1,38 @@
-<p>login works!</p>
+<div class="card">
+  <div class="login-title">
+    <img alt="logo" src="assets/images/logos/LOGO_FINAL_C.png" />
+    <h2>Bem-vindo Novamente</h2>
+  </div>
+
+  <div class="login-content">
+    <label for="username">Username</label>
+    <input
+      (keydown)="handleKey($event)"
+      [(ngModel)]="username"
+      id="username"
+      pInputText
+      placeholder="username"
+      type="text"
+    />
+
+    <label>Senha</label>
+    <input
+      (keydown)="handleKey($event)"
+      [(ngModel)]="password"
+      id="password1"
+      pInputText
+      placeholder="senha"
+      type="password"
+    />
+
+    <button
+      (click)="signIn()"
+      (keydown)="handleKey($event)"
+      [disabled]="!isValid()"
+      icon="pi pi-user"
+      label="Entrar"
+      pButton
+      pRipple
+    ></button>
+  </div>
+</div>

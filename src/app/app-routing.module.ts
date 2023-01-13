@@ -1,10 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from '@core/guards/auth.guard';
+
 import { ForbiddenComponent } from '@shared/components/forbidden/forbidden.component';
 import { InternalErrorComponent } from '@shared/components/internal-error/internal-error.component';
+import { PageNotFoundComponent } from '@shared/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
+  {
+    path: 'dashboard',
+    data: { title: 'Dashboard' },
+    loadChildren: () =>
+      import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule),
+    canActivate: [AuthGuard]
+  },
   {
     path: 'login',
     data: { title: 'Login' },
@@ -12,8 +22,15 @@ const routes: Routes = [
       import('./pages/login/login.module').then(m => m.LoginModule)
   },
   {
+    path: 'setup',
+    data: { title: 'Configurações' },
+    loadChildren: () =>
+      import('@pages/setup/setup.module').then(m => m.SetupModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'dashboard',
     pathMatch: 'full'
   },
   {
@@ -27,7 +44,7 @@ const routes: Routes = [
       {
         path: 'page-not-found',
         data: { title: '404 - Página não encontrada' },
-        component: InternalErrorComponent
+        component: PageNotFoundComponent
       },
       {
         path: 'internal',

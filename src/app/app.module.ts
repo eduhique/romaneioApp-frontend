@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { RippleModule } from 'primeng/ripple';
 
 import { CoreModule } from '@core/core.module';
@@ -20,6 +22,7 @@ import { AppComponent } from './app.component';
   imports: [
     // Angular components
     BrowserModule,
+    BrowserAnimationsModule,
 
     // App components
     AppRoutingModule,
@@ -31,7 +34,8 @@ import { AppComponent } from './app.component';
     RippleModule,
     InputTextModule,
     MenubarModule,
-    CheckboxModule
+    CheckboxModule,
+    ProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

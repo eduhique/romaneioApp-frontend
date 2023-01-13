@@ -1,0 +1,121 @@
+@import '../../../../../assets/styles/variables';
+
+:host {
+  flex: 0 0 auto;
+  padding: 1rem;
+  width: 100%;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: none;
+
+    background: $surface-card;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2),
+      0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+    border-radius: $border-radius;
+
+    .label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 3rem;
+      height: 3rem;
+
+      background: $primary-color;
+      box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2),
+        0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+      border-radius: $border-radius;
+
+      .text {
+        color: $surface-200;
+        font-weight: 700;
+        font-size: 1.25rem;
+      }
+    }
+
+    > h2 {
+      color: $text-color;
+      font-size: 1.25rem;
+      text-align: center;
+    }
+
+    > p {
+      color: $text-color-secondary;
+      font-size: 0.75rem;
+      font-weight: 400;
+      word-wrap: break-word;
+      text-align: justify;
+    }
+
+    &:disabled {
+      background: $surface-300;
+      cursor: default;
+
+      .label {
+        background: $surface-500;
+
+        .text {
+          color: $surface-300;
+        }
+      }
+
+      > h2 {
+        color: $text-color-secondary;
+      }
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 50%;
+
+    .card {
+      .label {
+        width: 4rem;
+        height: 4rem;
+
+        .text {
+          font-size: 1.5rem;
+        }
+      }
+
+      > h2 {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    width: 33.3333333%;
+
+    .card {
+      .label {
+        .text {
+          font-weight: 900;
+          font-size: 1.75rem;
+        }
+      }
+
+      > h2 {
+        font-size: 1.75rem;
+      }
+
+      > p {
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  @media screen and (min-width: 1920px) {
+    width: 20%;
+  }
+}

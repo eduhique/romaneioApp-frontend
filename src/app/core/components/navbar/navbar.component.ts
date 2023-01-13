@@ -16,6 +16,11 @@ export class NavbarComponent {
         label: 'Dashboard',
         icon: 'pi pi-fw pi-home',
         routerLink: '/dashboard'
+      },
+      {
+        label: 'Configurações',
+        icon: 'pi pi-fw pi-cog',
+        routerLink: '/setup'
       }
     ];
   }

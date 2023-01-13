@@ -1,1 +1,9 @@
-<router-outlet></router-outlet>
+<div *ngIf="authenticated">
+  <romaneio-navbar></romaneio-navbar>
+</div>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+<div *ngIf="loading" class="loading-content">
+  <p-progressBar mode="indeterminate"></p-progressBar>
+</div>
