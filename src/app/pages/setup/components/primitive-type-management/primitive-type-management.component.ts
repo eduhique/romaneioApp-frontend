@@ -10,69 +10,71 @@ import { Table } from 'primeng/table';
 
 import { PaginatorParams } from '@core/models/paginator-params';
 
+import { ProductPrimitiveType } from '@shared/models/product-primitive-type';
+import { ProductPrimitiveTypeService } from '@shared/services/productPrimitiveType/product-primitive-type.service';
 import { defaultParams, paramGenerate } from '@shared/utils/helper';
 
 import { FunctionEnum } from '@pages/setup/models/function';
 import { User } from '@pages/setup/models/user';
-import { UsersService } from '@pages/setup/services/users/users.service';
 
 @Component({
-  selector: 'romaneio-users-management',
-  templateUrl: './users-management.component.html',
-  styleUrls: ['./users-management.component.scss']
+  selector: 'romaneio-primitive-type-management',
+  templateUrl: './primitive-type-management.component.html',
+  styleUrls: ['./primitive-type-management.component.scss']
 })
-export class UsersManagementComponent implements OnInit {
+export class PrimitiveTypeManagementComponent implements OnInit {
   @ViewChild('table')
   table!: Table;
 
   public qtdRegistros: number;
-  public users: User[];
+  public primitiveTypes: ProductPrimitiveType[];
   public isLoading: boolean;
-  public userEdit: User;
+  public primitiveTypeEdit: ProductPrimitiveType;
   public editModal: boolean;
   public currentUser: User;
   private lastLazyLoad!: LazyLoadEvent;
   private pageParams: PaginatorParams;
 
   constructor(
-    private usersService: UsersService,
+    private apiService: ProductPrimitiveTypeService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
     this.isLoading = false;
     this.qtdRegistros = 0;
 
-    this.users = [];
+    this.primitiveTypes = [];
 
-    this.userEdit = {};
+    this.primitiveTypeEdit = {};
 
     this.pageParams = defaultParams();
+
+    this.editModal = false;
 
     const userString = localStorage.getItem('currentUser');
 
     this.currentUser = userString ? (JSON.parse(userString) as User) : {};
-    this.editModal = false;
   }
 
   ngOnInit(): void {
     this.pageParams = defaultParams();
-    this.getUsers();
+    this.getTypes();
   }
 
-  submitUser(event: User) {
+  submitType(primitiveType: ProductPrimitiveType) {
     this.isLoading = true;
-    this.usersService.createUser(event).subscribe({
+    this.apiService.create(primitiveType).subscribe({
       next: response => {
         this.handleNotification(
           'success',
-          'Usuário criado com sucesso',
-          `O usuário ${
-            response.name ? response.name : ''
+          'Tipo primitivo criado com sucesso',
+          `O tipo ${
+            response.longName ? response.longName : ''
           } foi criado com sucesso.`
         );
         this.pageParams = defaultParams();
         this.table.reset();
-        this.getUsers();
+        this.getTypes();
       },
       error: (error: HttpErrorResponse) => {
         this.handleNotification(
@@ -85,39 +87,41 @@ export class UsersManagementComponent implements OnInit {
     });
   }
 
-  editUser(user: User): void {
+  editUser(primitiveType: ProductPrimitiveType): void {
     this.isLoading = true;
     this.editModal = false;
-    this.usersService.putUser(user.id ? user.id : 0, user).subscribe({
-      next: () => {
-        this.handleNotification(
-          'success',
-          'Usuário Editado com sucesso',
-          undefined
-        );
-        this.getUsers();
-      },
-      error: (error: HttpErrorResponse) => {
-        this.handleNotification(
-          'error',
-          `${error.status} - ${error.statusText}`,
-          error.message
-        );
-        this.isLoading = false;
-        this.userEdit = {};
-      }
-    });
+    this.apiService
+      .change(primitiveType.id ? primitiveType.id : 0, primitiveType)
+      .subscribe({
+        next: () => {
+          this.handleNotification(
+            'success',
+            'Tipo primitivo Editado com sucesso',
+            undefined
+          );
+          this.getTypes();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.handleNotification(
+            'error',
+            `${error.status} - ${error.statusText}`,
+            error.message
+          );
+          this.isLoading = false;
+          this.primitiveTypeEdit = {};
+        }
+      });
   }
 
   deleteUser(id: number): void {
     this.editModal = false;
     this.isLoading = true;
     this.confirmationService.confirm({
-      message: 'Você tem certeza que deseja apagar esse usuário?',
+      message: 'Você tem certeza que deseja apagar esse Tipo primitivo?',
       header: 'Confirmação de Exclusão',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.usersService.deleteUser(id).subscribe({
+        this.apiService.delete(id).subscribe({
           next: () => {
             this.handleNotification(
               'success',
@@ -126,7 +130,7 @@ export class UsersManagementComponent implements OnInit {
             );
             this.pageParams = defaultParams();
             this.table.reset();
-            this.getUsers();
+            this.getTypes();
           },
           error: (error: HttpErrorResponse) => {
             console.log(error);
@@ -136,7 +140,7 @@ export class UsersManagementComponent implements OnInit {
               error.message
             );
             this.isLoading = false;
-            this.userEdit = {};
+            this.primitiveTypeEdit = {};
           }
         });
       },
@@ -144,6 +148,28 @@ export class UsersManagementComponent implements OnInit {
         this.closeEditModal();
       }
     });
+  }
+
+  openEditModal(primitiveType: ProductPrimitiveType): void {
+    this.primitiveTypeEdit = { ...primitiveType };
+    this.editModal = true;
+  }
+
+  closeEditModal(): void {
+    this.editModal = false;
+    this.primitiveTypeEdit = {};
+  }
+
+  isDisabled(): boolean {
+    return (
+      this.currentUser.function !== FunctionEnum.ADMINISTRADOR &&
+      this.currentUser.function !== FunctionEnum.MASTER &&
+      this.currentUser.function !== FunctionEnum.GERENTE
+    );
+  }
+
+  getDate(date: string | Date): string {
+    return new Date(date).toLocaleString();
   }
 
   onChange(event: LazyLoadEvent): void {
@@ -172,44 +198,16 @@ export class UsersManagementComponent implements OnInit {
           this.pageParams.direction = 'desc';
         }
       }
-      this.getUsers();
+      this.getTypes();
     }
     this.lastLazyLoad = event;
   }
 
-  openEditModal(user: User): void {
-    this.userEdit = { ...user };
-    this.editModal = true;
-  }
-
-  closeEditModal(): void {
-    this.editModal = false;
-    this.userEdit = {};
-  }
-
-  isDisabled(user: User): boolean {
-    const geral =
-      (this.currentUser.function !== FunctionEnum.ADMINISTRADOR &&
-        this.currentUser.function !== FunctionEnum.MASTER) ||
-      user.function === FunctionEnum.MASTER;
-
-    const isAdmin =
-      this.currentUser.function === FunctionEnum.ADMINISTRADOR &&
-      user.function === FunctionEnum.ADMINISTRADOR &&
-      user.nickname !== this.currentUser.nickname;
-
-    return geral || isAdmin;
-  }
-
-  getDate(date: string | Date): string {
-    return new Date(date).toLocaleString();
-  }
-
-  private getUsers(): void {
+  private getTypes(): void {
     this.isLoading = true;
-    this.usersService.getAllUser(paramGenerate(this.pageParams)).subscribe({
+    this.apiService.getAll(paramGenerate(this.pageParams)).subscribe({
       next: response => {
-        this.users = response.data;
+        this.primitiveTypes = response.data;
         this.qtdRegistros = response.totalElements;
 
         if (

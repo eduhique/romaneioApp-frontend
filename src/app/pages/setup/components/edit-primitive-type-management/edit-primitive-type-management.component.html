@@ -1,0 +1,86 @@
+<p-dialog [(visible)]="modal" [modal]="true" header="Editar tipo primitiva">
+  <ng-template pTemplate="content">
+    <span class="field">
+      <label for="name">Nome completo</label>
+      <input
+        [(ngModel)]="primitiveType.longName"
+        autofocus
+        id="name"
+        pInputText
+        required
+        type="text"
+      />
+      <small *ngIf="!primitiveType.longName" class="invalid">
+        É obrigatório.
+      </small>
+    </span>
+    <div class="field">
+      <label for="Nickname">Nome Abreviado</label>
+      <input
+        [(ngModel)]="primitiveType.shortName"
+        [pKeyFilter]="blockSpace"
+        id="Nickname"
+        pInputText
+        required
+        type="text"
+      />
+      <small *ngIf="!idShortValid()" class="invalid">
+        É obrigatório. Deve ter no máximo 5 caracteres.
+      </small>
+    </div>
+
+    <div class="field">
+      <label>É ponto flutuante? (ex. 1.00)</label>
+      <div class="radio-grid">
+        <div class="radio-type">
+          <p-radioButton
+            [(ngModel)]="primitiveType.floatPoint"
+            [value]="true"
+            id="category1"
+            name="função"
+          ></p-radioButton>
+          <label for="category1">Sim</label>
+        </div>
+        <div class="radio-type">
+          <p-radioButton
+            [(ngModel)]="primitiveType.floatPoint"
+            [value]="false"
+            id="category2"
+            name="função"
+          ></p-radioButton>
+          <label for="category2">Não</label>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div class="content">
+        <button
+          (click)="delete()"
+          class="p-button-rounded p-button-danger"
+          icon="pi pi-trash"
+          pButton
+          pRipple
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      (click)="hiddenModal()"
+      class="p-button-text"
+      icon="pi pi-times"
+      label="Cancelar"
+      pButton
+      pRipple
+    ></button>
+    <button
+      (click)="submitType()"
+      [disabled]="!isValid()"
+      icon="pi pi-check"
+      label="Salvar"
+      pButton
+      pRipple
+    ></button>
+  </ng-template>
+</p-dialog>

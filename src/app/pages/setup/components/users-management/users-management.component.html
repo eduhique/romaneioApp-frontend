@@ -1,10 +1,20 @@
 <romaneio-new-users-management (sendUser)="submitUser($event)">
 </romaneio-new-users-management>
+<romaneio-edit-users-management
+  (closeModal)="closeEditModal()"
+  (deleteUser)="deleteUser($event)"
+  (sendUser)="editUser($event)"
+  [modal]="editModal"
+  [trashDisable]="currentUser.nickname === userEdit.nickname"
+  [user]="userEdit"
+></romaneio-edit-users-management>
 <div class="content-table">
   <p-table
     #table
+    (onLazyLoad)="onChange($event)"
     [filterDelay]="0"
     [globalFilterFields]="[
+      'id',
       'name',
       'nickname',
       'active',
@@ -16,7 +26,7 @@
     [loading]="isLoading"
     [paginator]="true"
     [rowHover]="true"
-    [rows]="10"
+    [rows]="5"
     [scrollable]="true"
     [showCurrentPageReport]="true"
     [totalRecords]="qtdRegistros"
@@ -27,6 +37,7 @@
   >
     <ng-template pTemplate="colgroup">
       <colgroup>
+        <col style="min-width: 7.5rem" />
         <col style="min-width: 10rem" />
         <col style="min-width: 9rem" />
         <col style="min-width: 9rem" />
@@ -38,6 +49,10 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
+        <th pSortableColumn="id">
+          código
+          <p-sortIcon field="id"></p-sortIcon>
+        </th>
         <th pSortableColumn="name">
           Nome
           <p-sortIcon field="name"></p-sortIcon>
@@ -67,6 +82,7 @@
     </ng-template>
     <ng-template let-user pTemplate="body">
       <tr>
+        <td>{{ user.id }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.nickname }}</td>
         <td>
@@ -79,11 +95,13 @@
             [label]="user.function"
           ></romaneio-function-label>
         </td>
-        <td>{{ user.createdDate.toLocaleString() }}</td>
-        <td>{{ user.lastUpdate.toLocaleString() }}</td>
+        <td>{{ getDate(user.createdDate) }}</td>
+        <td>{{ getDate(user.lastUpdate) }}</td>
         <td>
           <button
-            class="p-button-rounded p-button-success"
+            (click)="openEditModal(user)"
+            [disabled]="isDisabled(user)"
+            class="p-button-rounded p-button-warning"
             icon="pi pi-pencil"
             pButton
             pRipple

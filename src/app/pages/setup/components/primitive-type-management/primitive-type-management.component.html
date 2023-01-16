@@ -1,0 +1,91 @@
+<romaneio-new-primitive-type-management
+  (sendType)="submitType($event)"
+></romaneio-new-primitive-type-management>
+<romaneio-edit-primitive-type-management
+  (closeModal)="closeEditModal()"
+  (deleteType)="deleteUser($event)"
+  (sendType)="editUser($event)"
+  [modal]="editModal"
+  [primitiveType]="primitiveTypeEdit"
+></romaneio-edit-primitive-type-management>
+<div class="content-table">
+  <p-table
+    #table
+    (onLazyLoad)="onChange($event)"
+    [filterDelay]="0"
+    [globalFilterFields]="[
+      'id',
+      'longName',
+      'shortName',
+      'floatPoint',
+      'createdDate',
+      'lastUpdate'
+    ]"
+    [lazy]="true"
+    [loading]="isLoading"
+    [paginator]="qtdRegistros > 0"
+    [rowHover]="true"
+    [rows]="5"
+    [scrollable]="true"
+    [showCurrentPageReport]="true"
+    [totalRecords]="qtdRegistros"
+    [value]="primitiveTypes"
+    currentPageReportTemplate="Mostrando de {first} até {last} de {totalRecords} registros"
+    dataKey="id"
+    scrollHeight="660px"
+  >
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+        <col style="width: 7.5rem" />
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id">
+          código
+          <p-sortIcon field="id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="longName">
+          Nome
+          <p-sortIcon field="longName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="shortName">
+          Nome Abreviado
+          <p-sortIcon field="shortName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="floatPoint">
+          Ponto Flutuante
+          <p-sortIcon field="floatPoint"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template let-type pTemplate="body">
+      <tr>
+        <td>{{ type.id }}</td>
+        <td>{{ type.longName }}</td>
+        <td>{{ type.shortName }}</td>
+        <td>
+          <romaneio-function-label
+            [label]="type.floatPoint ? 'Sim' : 'Não'"
+          ></romaneio-function-label>
+        </td>
+        <td>
+          <button
+            (click)="openEditModal(type)"
+            [disabled]="isDisabled()"
+            class="p-button-rounded p-button-warning"
+            icon="pi pi-pencil"
+            pButton
+            pRipple
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        No total há {{ qtdRegistros }} Tipos primitivos.
+      </div>
+    </ng-template>
+  </p-table>
+</div>

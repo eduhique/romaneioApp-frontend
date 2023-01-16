@@ -24,9 +24,17 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (error.status === 403) {
           this.router.navigateByUrl('/error/forbidden');
         } else if (error.status === 404) {
-          this.handleNotification('warn', error.statusText, error.message);
+          this.handleNotification(
+            'warn',
+            `${error.status} - ${error.statusText}`,
+            error.message
+          );
         } else {
-          this.handleNotification('error', error.statusText, error.message);
+          this.handleNotification(
+            'error',
+            `${error.status} - ${error.statusText}`,
+            error.message
+          );
         }
         return throwError(() => error);
       })

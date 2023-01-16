@@ -2,9 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
-import { MessageService } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
-import { ToastModule } from 'primeng/toast';
 
 import { AuthGuard } from '@core/guards/auth.guard';
 import { AuthInterceptor } from '@core/interceptors/auth.interceptor';
@@ -16,11 +14,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [NavbarComponent],
-  imports: [CommonModule, HttpClientModule, MenubarModule, ToastModule],
+  imports: [CommonModule, HttpClientModule, MenubarModule],
   providers: [
     NavigationService,
     AuthorizationService,
-    MessageService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,

@@ -1,39 +1,47 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { FunctionEnum } from '@pages/setup/models/function';
 import { User } from '@pages/setup/models/user';
 
 @Component({
-  selector: 'romaneio-new-users-management',
-  templateUrl: './new-users-management.component.html',
-  styleUrls: ['./new-users-management.component.scss']
+  selector: 'romaneio-edit-users-management',
+  templateUrl: './edit-users-management.component.html',
+  styleUrls: ['./edit-users-management.component.scss']
 })
-export class NewUsersManagementComponent {
-  public modal: boolean;
-  public submitted: boolean;
+export class EditUsersManagementComponent {
+  @Input()
   public user: User;
-  public blockSpace: RegExp;
+
+  @Input()
+  public modal: boolean;
+
+  @Input()
+  public trashDisable: boolean;
+
+  @Output()
+  public closeModal: EventEmitter<void>;
 
   @Output()
   public sendUser: EventEmitter<User>;
 
+  @Output()
+  public deleteUser: EventEmitter<number>;
+
+  public blockSpace: RegExp;
+
   constructor() {
     this.modal = false;
-    this.submitted = false;
+    this.closeModal = new EventEmitter<void>();
     this.user = {};
     this.blockSpace = /\S/;
     this.sendUser = new EventEmitter<User>();
-  }
+    this.trashDisable = false;
 
-  openModal(): void {
-    this.user = { function: FunctionEnum.CONFERENTE, active: true };
-    this.submitted = false;
-    this.modal = true;
+    this.deleteUser = new EventEmitter<number>();
   }
 
   hiddenModal(): void {
-    this.modal = false;
-    this.submitted = false;
+    this.closeModal.emit();
   }
 
   getAdmin(): FunctionEnum {
@@ -52,12 +60,6 @@ export class NewUsersManagementComponent {
     return FunctionEnum.CAIXA;
   }
 
-  validPassword(): boolean {
-    return (
-      this.user.password !== undefined && this.user.password.trim().length >= 6
-    );
-  }
-
   isValid(): boolean {
     return (
       this.user.name !== undefined &&
@@ -65,22 +67,27 @@ export class NewUsersManagementComponent {
       this.user.function !== undefined &&
       this.user.active !== undefined &&
       this.user.name.trim().length > 0 &&
-      this.user.nickname.trim().length > 0 &&
-      this.user.active &&
-      this.validPassword()
+      this.user.nickname.trim().length > 0
     );
   }
 
   submitUser(): void {
-    this.submitted = true;
     if (this.isValid()) {
       this.user.name = this.user.name?.trim();
-      this.user.nickname = this.user.nickname?.trim().toLowerCase();
+      this.user.nickname = this.user.nickname?.trim();
       this.user.password = this.user.password?.trim();
 
-      this.modal = false;
       this.sendUser.emit(this.user);
-      this.user = {};
     }
+  }
+
+  radioDisabled(): boolean {
+    return this.user.function
+      ? this.user.function === FunctionEnum.ADMINISTRADOR
+      : false;
+  }
+
+  delete() {
+    this.deleteUser.emit(this.user.id);
   }
 }

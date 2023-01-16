@@ -22,7 +22,7 @@
 
     border-radius: $border-radius;
 
-    .label {
+    .icon {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -36,11 +36,8 @@
 
       border-radius: $border-radius;
 
-      .text {
-        color: $surface-200;
-        font-weight: 700;
-        font-size: 1.25rem;
-      }
+      color: $surface-200;
+      font-size: 1.5rem;
     }
 
     > h2 {
@@ -61,12 +58,10 @@
       background: $surface-300;
       cursor: default;
 
-      .label {
+      .icon {
         background: $surface-500;
 
-        .text {
-          color: $surface-300;
-        }
+        color: $surface-300;
       }
 
       > h2 {
@@ -79,13 +74,11 @@
     width: 50%;
 
     .card {
-      .label {
+      .icon {
         width: 4rem;
         height: 4rem;
 
-        .text {
-          font-size: 1.5rem;
-        }
+        font-size: 1.75rem;
       }
 
       > h2 {
@@ -98,11 +91,8 @@
     width: 33.3333333%;
 
     .card {
-      .label {
-        .text {
-          font-weight: 900;
-          font-size: 1.75rem;
-        }
+      .icon {
+        font-size: 2rem;
       }
 
       > h2 {

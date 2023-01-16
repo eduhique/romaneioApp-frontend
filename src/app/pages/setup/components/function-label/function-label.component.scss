@@ -3,6 +3,8 @@
   justify-content: center;
   align-items: center;
 
+  padding: 1rem;
+
   width: min-content;
   height: 2rem;
 
@@ -20,49 +22,39 @@
   color: #353232;
 }
 
-.inativo {
-  padding: 1rem;
-
+.inativo,
+.não {
   border: 1px solid #ff6259;
 
   color: #ff6259;
 }
 
-.ativo {
-  padding: 1rem;
-
+.ativo,
+.sim {
   border: 1px solid #0e8174;
 
   color: #0e8174;
 }
 
 .administrador {
-  padding: 1rem;
-
   border: 1px solid #ff6259;
 
   color: #ff6259;
 }
 
 .gerente {
-  padding: 1rem;
-
   border: 1px solid #0e8174;
 
   color: #0e8174;
 }
 
 .conferente {
-  padding: 1rem;
-
   border: 1px solid #326fd1;
 
   color: #326fd1;
 }
 
 .caixa {
-  padding: 1rem;
-
   border: 1px solid #a855f7;
 
   color: #a855f7;

@@ -1,23 +1,17 @@
 import {
-  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
-
-import { MessageService } from 'primeng/api';
+import { Observable } from 'rxjs';
 
 import { AuthorizationService } from '@core/services/authorization/authorization.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(
-    private authorization: AuthorizationService,
-    private message: MessageService
-  ) {}
+  constructor(private authorization: AuthorizationService) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -35,21 +29,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
     const requestClone = request.clone({ headers });
 
-    return next.handle(requestClone).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 401)
-          this.handleNotification('error', error.statusText, error.message);
-
-        return throwError(() => error);
-      })
-    );
-  }
-
-  handleNotification(
-    type: 'success' | 'info' | 'warn' | 'error',
-    title: string,
-    detail: string
-  ): void {
-    this.message.add({ severity: type, summary: title, detail });
+    return next.handle(requestClone);
   }
 }

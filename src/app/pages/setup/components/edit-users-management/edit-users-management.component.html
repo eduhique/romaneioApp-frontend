@@ -1,0 +1,115 @@
+<p-dialog [(visible)]="modal" [modal]="true" header="Editar Usuário">
+  <ng-template pTemplate="content">
+    <span class="field">
+      <label for="name">Nome</label>
+      <input
+        [(ngModel)]="user.name"
+        autofocus
+        id="name"
+        pInputText
+        required
+        type="text"
+      />
+      <small *ngIf="!user.name" class="invalid"> Nome é Obrigatório. </small>
+    </span>
+    <div class="field">
+      <label for="Nickname">Nickname</label>
+      <input
+        [(ngModel)]="user.nickname"
+        [disabled]="true"
+        [pKeyFilter]="blockSpace"
+        id="Nickname"
+        pInputText
+        required
+        type="text"
+      />
+      <small *ngIf="!user.nickname" class="invalid">
+        Nickname é Obrigatório.
+      </small>
+    </div>
+
+    <div class="field">
+      <label>Função</label>
+      <div class="radio-grid">
+        <div class="radio-admin">
+          <p-radioButton
+            [(ngModel)]="user.function"
+            [disabled]="radioDisabled()"
+            [value]="getAdmin()"
+            id="category1"
+            name="função"
+          ></p-radioButton>
+          <label for="category1">Administrador</label>
+        </div>
+        <div class="radio-manager">
+          <p-radioButton
+            [(ngModel)]="user.function"
+            [disabled]="radioDisabled()"
+            [value]="getManager()"
+            id="category2"
+            name="função"
+          ></p-radioButton>
+          <label for="category2">Gerente</label>
+        </div>
+        <div class="radio-confer">
+          <p-radioButton
+            [(ngModel)]="user.function"
+            [disabled]="radioDisabled()"
+            [value]="getConfer()"
+            id="category3"
+            name="função"
+          ></p-radioButton>
+          <label for="category3">Conferente</label>
+        </div>
+        <div class="radio-register">
+          <p-radioButton
+            [(ngModel)]="user.function"
+            [disabled]="radioDisabled()"
+            [value]="getRegister()"
+            id="category4"
+            name="função"
+          ></p-radioButton>
+          <label for="category4">Caixa</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="active-content">
+      <div class="active-div">
+        <label for="active">Usuário Habilitado</label>
+        <p-inputSwitch
+          [(ngModel)]="user.active"
+          [disabled]="trashDisable"
+          id="active"
+        ></p-inputSwitch>
+      </div>
+      <button
+        (click)="delete()"
+        [disabled]="trashDisable"
+        class="p-button-rounded p-button-danger"
+        icon="pi pi-trash"
+        pButton
+        pRipple
+      ></button>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      (click)="hiddenModal()"
+      class="p-button-text"
+      icon="pi pi-times"
+      label="Cancelar"
+      pButton
+      pRipple
+    ></button>
+    <button
+      (click)="submitUser()"
+      [disabled]="!isValid()"
+      icon="pi pi-check"
+      label="Salvar"
+      pButton
+      pRipple
+    ></button>
+  </ng-template>
+</p-dialog>

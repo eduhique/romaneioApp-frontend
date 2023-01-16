@@ -6,6 +6,12 @@ import { BehaviorSubject, map, Observable, of } from 'rxjs';
 
 import { JwtDTO } from '@core/models/jwt-dto';
 
+import { User } from '@pages/setup/models/user';
+
+const jwtToken = 'jwtToken';
+
+const currentUser = 'currentUser';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,13 +29,14 @@ export class AuthorizationService {
   }
 
   isAuthenticated(): Observable<boolean | UrlTree> {
-    const jwtTokenString: string | null = localStorage.getItem('jwtToken');
+    const jwtTokenString: string | null = localStorage.getItem(jwtToken);
 
     if (jwtTokenString) {
       return this.http.get<boolean>(`${this.apiPath}/validation`).pipe(
         map(result => {
           if (!result) {
-            localStorage.removeItem('jwtToken');
+            localStorage.removeItem(jwtToken);
+            localStorage.removeItem(currentUser);
             this._auth.next(false);
             return this.router.createUrlTree(['login']);
           }
@@ -43,7 +50,7 @@ export class AuthorizationService {
   }
 
   getToken(): JwtDTO | null {
-    const jwtTokenString: string | null = localStorage.getItem('jwtToken');
+    const jwtTokenString: string | null = localStorage.getItem(jwtToken);
 
     if (jwtTokenString) {
       return JSON.parse(jwtTokenString) as JwtDTO;
@@ -59,10 +66,28 @@ export class AuthorizationService {
         map(response => {
           response.createdDate = new Date();
 
-          localStorage.setItem('jwtToken', JSON.stringify(response));
+          localStorage.setItem(jwtToken, JSON.stringify(response));
+
+          this.getCurrentUser().subscribe();
+
           this._auth.next(true);
           return response;
         })
       );
+  }
+
+  getCurrentUser(): Observable<User> {
+    const userString: string | null = localStorage.getItem(currentUser);
+
+    if (userString) {
+      return of(JSON.parse(userString) as User);
+    }
+
+    return this.http.get<User>(`${this.apiPath}/current-user`).pipe(
+      map(response => {
+        localStorage.setItem(currentUser, JSON.stringify(response));
+        return response;
+      })
+    );
   }
 }

@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class DashboardCardComponent {
   @Input()
-  public label: string;
+  public icon: string;
 
   @Input()
   public title: string;
@@ -22,7 +22,7 @@ export class DashboardCardComponent {
   public link: string;
 
   constructor() {
-    this.label = '';
+    this.icon = '';
     this.title = '';
     this.subtitle = '';
     this.disabled = true;

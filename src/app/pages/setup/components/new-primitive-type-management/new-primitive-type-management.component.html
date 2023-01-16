@@ -1,0 +1,87 @@
+<p-toolbar>
+  <ng-template pTemplate="left">
+    <button
+      (click)="openModal()"
+      icon="pi pi-plus"
+      label="Novo tipo primitivo"
+      pButton
+      pRipple
+    ></button>
+  </ng-template>
+</p-toolbar>
+
+<p-dialog [(visible)]="modal" [modal]="true" header="Novo tipo primitiva">
+  <ng-template pTemplate="content">
+    <span class="field">
+      <label for="name">Nome completo</label>
+      <input
+        [(ngModel)]="primitiveTypeEdit.longName"
+        autofocus
+        id="name"
+        pInputText
+        required
+        type="text"
+      />
+      <small *ngIf="submitted && !primitiveTypeEdit.longName" class="invalid">
+        É obrigatório.
+      </small>
+    </span>
+    <div class="field">
+      <label for="Nickname">Nome Abreviado</label>
+      <input
+        [(ngModel)]="primitiveTypeEdit.shortName"
+        [pKeyFilter]="blockSpace"
+        id="Nickname"
+        pInputText
+        required
+        type="text"
+      />
+      <small *ngIf="submitted && !idShortValid()" class="invalid">
+        É obrigatório. Deve ter no máximo 5 caracteres.
+      </small>
+    </div>
+
+    <div class="field">
+      <label>É ponto flutuante? (ex. 1.00)</label>
+      <div class="radio-grid">
+        <div class="radio-type">
+          <p-radioButton
+            [(ngModel)]="primitiveTypeEdit.floatPoint"
+            [value]="true"
+            id="category1"
+            name="função"
+          ></p-radioButton>
+          <label for="category1">Sim</label>
+        </div>
+        <div class="radio-type">
+          <p-radioButton
+            [(ngModel)]="primitiveTypeEdit.floatPoint"
+            [value]="false"
+            id="category2"
+            name="função"
+          ></p-radioButton>
+          <label for="category2">Não</label>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      (click)="hiddenModal()"
+      class="p-button-text"
+      icon="pi pi-times"
+      label="Cancelar"
+      pButton
+      pRipple
+    ></button>
+    <button
+      (click)="submitType()"
+      [disabled]="!isValid()"
+      icon="pi pi-check"
+      label="Salvar"
+      pButton
+      pRipple
+    ></button>
+  </ng-template>
+</p-dialog>
