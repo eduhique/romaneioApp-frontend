@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
+
+import { AuthorizationService } from '@core/services/authorization/authorization.service';
 
 import { FunctionEnum } from '@pages/setup/models/function';
 import { User } from '@pages/setup/models/user';
@@ -14,7 +16,10 @@ export class NavbarComponent {
   public currentUser: User;
   public items: MenuItem[];
 
-  constructor() {
+  constructor(
+    private confirmationService: ConfirmationService,
+    private authorizationService: AuthorizationService
+  ) {
     const userString = localStorage.getItem('currentUser');
 
     this.currentUser = userString ? (JSON.parse(userString) as User) : {};
@@ -26,10 +31,22 @@ export class NavbarComponent {
         routerLink: '/dashboard'
       },
       {
+        label: 'Produtos',
+        icon: 'pi pi-fw pi-box',
+        routerLink: '/product',
+        disabled: this.isDisabled()
+      },
+      {
         label: 'Configurações',
-        icon: 'pi pi-fw pi-cog',
+        icon: 'pi pi-fw pi-wrench',
         routerLink: '/setup',
         disabled: this.isDisabled()
+      },
+      { separator: true },
+      {
+        label: 'Sair',
+        icon: 'pi pi-fw pi-sign-out',
+        command: () => this.quit()
       }
     ];
   }
@@ -43,5 +60,17 @@ export class NavbarComponent {
         this.currentUser.function === FunctionEnum.GERENTE
       )
     );
+  }
+
+  private quit() {
+    this.confirmationService.confirm({
+      message: 'Você tem certeza que deseja sair?',
+      header: 'Confirmação de SignOut',
+      icon: 'pi pi-fw pi-power-off text-red-600',
+      accept: () => {
+        this.authorizationService.signOut();
+        location.reload();
+      }
+    });
   }
 }

@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
+import { ConfirmationService } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 
 import { AuthGuard } from '@core/guards/auth.guard';
@@ -14,9 +14,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [NavbarComponent],
-  imports: [CommonModule, HttpClientModule, MenubarModule],
+  imports: [MenubarModule],
   providers: [
     NavigationService,
+    ConfirmationService,
     AuthorizationService,
     AuthGuard,
     {

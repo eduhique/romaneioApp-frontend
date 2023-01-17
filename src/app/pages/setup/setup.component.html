@@ -13,5 +13,11 @@
 <div class="card">
   <romaneio-primitive-type-management></romaneio-primitive-type-management>
 </div>
-
-<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+<p-confirmDialog
+  [blockScroll]="true"
+  [closeOnEscape]="true"
+  [style]="{ width: '450px' }"
+  acceptLabel="Sim"
+  rejectButtonStyleClass="p-button-secondary p-button-text"
+  rejectLabel="Cancelar"
+></p-confirmDialog>

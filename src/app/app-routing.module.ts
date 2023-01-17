@@ -29,6 +29,13 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'product',
+    data: { title: 'Produtos' },
+    loadChildren: () =>
+      import('@pages/product/product.module').then(m => m.ProductModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
@@ -61,7 +68,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled'
+    })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

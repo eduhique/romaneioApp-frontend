@@ -10,10 +10,10 @@ import { Table } from 'primeng/table';
 
 import { PaginatorParams } from '@core/models/paginator-params';
 
-import { ProductPrimitiveType } from '@shared/models/product-primitive-type';
-import { ProductPrimitiveTypeService } from '@shared/services/productPrimitiveType/product-primitive-type.service';
 import { defaultParams, paramGenerate } from '@shared/utils/helper';
 
+import { ProductPrimitiveType } from '@pages/product/models/product-primitive-type';
+import { ProductPrimitiveTypeService } from '@pages/product/services/productPrimitiveType/product-primitive-type.service';
 import { FunctionEnum } from '@pages/setup/models/function';
 import { User } from '@pages/setup/models/user';
 
@@ -87,7 +87,7 @@ export class PrimitiveTypeManagementComponent implements OnInit {
     });
   }
 
-  editUser(primitiveType: ProductPrimitiveType): void {
+  editType(primitiveType: ProductPrimitiveType): void {
     this.isLoading = true;
     this.editModal = false;
     this.apiService
@@ -113,19 +113,19 @@ export class PrimitiveTypeManagementComponent implements OnInit {
       });
   }
 
-  deleteUser(id: number): void {
+  deleteType(id: number): void {
     this.editModal = false;
-    this.isLoading = true;
     this.confirmationService.confirm({
       message: 'Você tem certeza que deseja apagar esse Tipo primitivo?',
       header: 'Confirmação de Exclusão',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        this.isLoading = true;
         this.apiService.delete(id).subscribe({
           next: () => {
             this.handleNotification(
               'success',
-              'Usuário Deletado com sucesso',
+              'Tipo primitivo deletado com sucesso',
               undefined
             );
             this.pageParams = defaultParams();
@@ -133,7 +133,6 @@ export class PrimitiveTypeManagementComponent implements OnInit {
             this.getTypes();
           },
           error: (error: HttpErrorResponse) => {
-            console.log(error);
             this.handleNotification(
               'error',
               `${error.status} - ${error.statusText}`,
@@ -166,10 +165,6 @@ export class PrimitiveTypeManagementComponent implements OnInit {
       this.currentUser.function !== FunctionEnum.MASTER &&
       this.currentUser.function !== FunctionEnum.GERENTE
     );
-  }
-
-  getDate(date: string | Date): string {
-    return new Date(date).toLocaleString();
   }
 
   onChange(event: LazyLoadEvent): void {

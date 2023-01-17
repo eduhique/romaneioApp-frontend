@@ -1,6 +1,4 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
@@ -8,6 +6,7 @@ import { RippleModule } from 'primeng/ripple';
 
 import { CoreModule } from '@core/core.module';
 
+import { FunctionLabelComponent } from '@shared/components/function-label/function-label.component';
 import { PageNotFoundComponent } from '@shared/components/page-not-found/page-not-found.component';
 
 import { ForbiddenComponent } from './components/forbidden/forbidden.component';
@@ -15,12 +14,13 @@ import { ForbiddenComponent } from './components/forbidden/forbidden.component';
 import { BackDirective } from './directives/backButton/back.directive';
 
 @NgModule({
-  declarations: [BackDirective, PageNotFoundComponent, ForbiddenComponent],
+  declarations: [
+    BackDirective,
+    PageNotFoundComponent,
+    ForbiddenComponent,
+    FunctionLabelComponent
+  ],
   imports: [
-    // Angular Modules
-    CommonModule,
-    BrowserModule,
-
     // App modules
     CoreModule,
     ButtonModule,
@@ -29,6 +29,11 @@ import { BackDirective } from './directives/backButton/back.directive';
 
     // PrimeNG Modules
   ],
-  exports: [PageNotFoundComponent, BackDirective, ForbiddenComponent]
+  exports: [
+    PageNotFoundComponent,
+    BackDirective,
+    ForbiddenComponent,
+    FunctionLabelComponent
+  ]
 })
 export class SharedModule {}

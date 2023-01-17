@@ -3,8 +3,8 @@
 ></romaneio-new-primitive-type-management>
 <romaneio-edit-primitive-type-management
   (closeModal)="closeEditModal()"
-  (deleteType)="deleteUser($event)"
-  (sendType)="editUser($event)"
+  (deleteType)="deleteType($event)"
+  (sendType)="editType($event)"
   [modal]="editModal"
   [primitiveType]="primitiveTypeEdit"
 ></romaneio-edit-primitive-type-management>
@@ -13,14 +13,7 @@
     #table
     (onLazyLoad)="onChange($event)"
     [filterDelay]="0"
-    [globalFilterFields]="[
-      'id',
-      'longName',
-      'shortName',
-      'floatPoint',
-      'createdDate',
-      'lastUpdate'
-    ]"
+    [globalFilterFields]="['id', 'longName', 'shortName', 'floatPoint']"
     [lazy]="true"
     [loading]="isLoading"
     [paginator]="qtdRegistros > 0"
@@ -86,6 +79,11 @@
       <div class="p-d-flex p-ai-center p-jc-between">
         No total há {{ qtdRegistros }} Tipos primitivos.
       </div>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">Não há tipos primitivos cadastrados.</td>
+      </tr>
     </ng-template>
   </p-table>
 </div>

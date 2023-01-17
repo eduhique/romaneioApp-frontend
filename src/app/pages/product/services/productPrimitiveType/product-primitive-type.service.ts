@@ -5,9 +5,7 @@ import { Observable } from 'rxjs';
 
 import { Page } from '@core/models/page';
 
-import { ProductPrimitiveType } from '@shared/models/product-primitive-type';
-
-import { User } from '@pages/setup/models/user';
+import { ProductPrimitiveType } from '@pages/product/models/product-primitive-type';
 
 @Injectable({
   providedIn: 'root'
@@ -22,22 +20,28 @@ export class ProductPrimitiveTypeService {
   create(
     productPrimitiveType: ProductPrimitiveType
   ): Observable<ProductPrimitiveType> {
-    return this.http.post<User>(this.apiPath, productPrimitiveType);
+    return this.http.post<ProductPrimitiveType>(
+      this.apiPath,
+      productPrimitiveType
+    );
   }
 
   change(
     id: number,
     productPrimitiveType: ProductPrimitiveType
-  ): Observable<User> {
-    return this.http.put<User>(`${this.apiPath}/${id}`, productPrimitiveType);
+  ): Observable<ProductPrimitiveType> {
+    return this.http.put<ProductPrimitiveType>(
+      `${this.apiPath}/${id}`,
+      productPrimitiveType
+    );
   }
 
   getAll(params?: HttpParams): Observable<Page<ProductPrimitiveType>> {
-    return this.http.get<Page<User>>(this.apiPath, { params });
+    return this.http.get<Page<ProductPrimitiveType>>(this.apiPath, { params });
   }
 
   get(id: number): Observable<ProductPrimitiveType> {
-    return this.http.get<User>(`${this.apiPath}/${id}`);
+    return this.http.get<ProductPrimitiveType>(`${this.apiPath}/${id}`);
   }
 
   delete(id: number): Observable<unknown> {

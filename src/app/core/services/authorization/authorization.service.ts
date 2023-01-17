@@ -76,6 +76,11 @@ export class AuthorizationService {
       );
   }
 
+  signOut(): void {
+    localStorage.removeItem(jwtToken);
+    localStorage.removeItem(currentUser);
+  }
+
   getCurrentUser(): Observable<User> {
     const userString: string | null = localStorage.getItem(currentUser);
 

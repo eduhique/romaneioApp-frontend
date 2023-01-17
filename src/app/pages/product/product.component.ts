@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { cloneDeep } from 'lodash';
 
 import {
   ConfirmationService,
@@ -12,67 +13,71 @@ import { PaginatorParams } from '@core/models/paginator-params';
 
 import { defaultParams, paramGenerate } from '@shared/utils/helper';
 
+import { Product } from '@pages/product/models/product';
+import { ProductService } from '@pages/product/services/product/product.service';
 import { FunctionEnum } from '@pages/setup/models/function';
 import { User } from '@pages/setup/models/user';
-import { UsersService } from '@pages/setup/services/users/users.service';
 
 @Component({
-  selector: 'romaneio-users-management',
-  templateUrl: './users-management.component.html',
-  styleUrls: ['./users-management.component.scss']
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.scss']
 })
-export class UsersManagementComponent implements OnInit {
+export class ProductComponent implements OnInit {
   @ViewChild('table')
   table!: Table;
 
   public qtdRegistros: number;
-  public users: User[];
+  public products: Product[];
   public isLoading: boolean;
-  public userEdit: User;
+  public product: Product;
   public editModal: boolean;
   public currentUser: User;
   private lastLazyLoad!: LazyLoadEvent;
   private pageParams: PaginatorParams;
 
   constructor(
-    private usersService: UsersService,
+    private apiService: ProductService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
     this.isLoading = false;
-    this.qtdRegistros = 0;
+    this.qtdRegistros = 11;
 
-    this.users = [];
+    this.products = [];
 
-    this.userEdit = {};
+    this.product = {};
 
     this.pageParams = defaultParams();
+    this.pageParams.size = 6;
+
+    this.editModal = false;
 
     const userString = localStorage.getItem('currentUser');
 
     this.currentUser = userString ? (JSON.parse(userString) as User) : {};
-    this.editModal = false;
   }
 
   ngOnInit(): void {
     this.pageParams = defaultParams();
-    this.getUsers();
+    this.pageParams.size = 6;
+    this.getData();
   }
 
-  submitUser(event: User) {
+  submitProduct(newProduct: Product) {
     this.isLoading = true;
-    this.usersService.createUser(event).subscribe({
+    this.apiService.create(newProduct).subscribe({
       next: response => {
         this.handleNotification(
           'success',
-          'Usuário criado com sucesso',
-          `O usuário ${
+          'O Produto foi criado com sucesso',
+          `O produto ${
             response.name ? response.name : ''
           } foi criado com sucesso.`
         );
         this.pageParams = defaultParams();
+        this.pageParams.size = 6;
         this.table.reset();
-        this.getUsers();
+        this.getData();
       },
       error: (error: HttpErrorResponse) => {
         this.handleNotification(
@@ -85,17 +90,17 @@ export class UsersManagementComponent implements OnInit {
     });
   }
 
-  editUser(user: User): void {
+  editProduct(product1: Product): void {
     this.isLoading = true;
     this.editModal = false;
-    this.usersService.putUser(user.id ? user.id : 0, user).subscribe({
+    this.apiService.change(product1.id ? product1.id : 0, product1).subscribe({
       next: () => {
         this.handleNotification(
           'success',
-          'Usuário Editado com sucesso',
+          'Produto Editado com sucesso',
           undefined
         );
-        this.getUsers();
+        this.getData();
       },
       error: (error: HttpErrorResponse) => {
         this.handleNotification(
@@ -104,29 +109,30 @@ export class UsersManagementComponent implements OnInit {
           error.message
         );
         this.isLoading = false;
-        this.userEdit = {};
+        this.product = {};
       }
     });
   }
 
-  deleteUser(id: number): void {
+  deleteProduct(id: number): void {
     this.editModal = false;
     this.confirmationService.confirm({
-      message: 'Você tem certeza que deseja apagar esse usuário?',
+      message: 'Você tem certeza que deseja apagar esse produto?',
       header: 'Confirmação de Exclusão',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.isLoading = true;
-        this.usersService.deleteUser(id).subscribe({
+        this.apiService.delete(id).subscribe({
           next: () => {
             this.handleNotification(
               'success',
-              'Usuário deletado com sucesso',
+              'Produto deletado com sucesso',
               undefined
             );
             this.pageParams = defaultParams();
+            this.pageParams.size = 6;
             this.table.reset();
-            this.getUsers();
+            this.getData();
           },
           error: (error: HttpErrorResponse) => {
             this.handleNotification(
@@ -135,7 +141,7 @@ export class UsersManagementComponent implements OnInit {
               error.message
             );
             this.isLoading = false;
-            this.userEdit = {};
+            this.product = {};
           }
         });
       },
@@ -143,6 +149,28 @@ export class UsersManagementComponent implements OnInit {
         this.closeEditModal();
       }
     });
+  }
+
+  openEditModal(product1: Product): void {
+    this.product = cloneDeep<Product>(product1);
+    this.editModal = true;
+  }
+
+  closeEditModal(): void {
+    this.editModal = false;
+    this.product = {};
+  }
+
+  isDisabled(): boolean {
+    return (
+      this.currentUser.function !== FunctionEnum.ADMINISTRADOR &&
+      this.currentUser.function !== FunctionEnum.MASTER &&
+      this.currentUser.function !== FunctionEnum.GERENTE
+    );
+  }
+
+  getDate(date: string | Date): string {
+    return new Date(date).toLocaleString();
   }
 
   onChange(event: LazyLoadEvent): void {
@@ -171,44 +199,16 @@ export class UsersManagementComponent implements OnInit {
           this.pageParams.direction = 'desc';
         }
       }
-      this.getUsers();
+      this.getData();
     }
     this.lastLazyLoad = event;
   }
 
-  openEditModal(user: User): void {
-    this.userEdit = { ...user };
-    this.editModal = true;
-  }
-
-  closeEditModal(): void {
-    this.editModal = false;
-    this.userEdit = {};
-  }
-
-  isDisabled(user: User): boolean {
-    const geral =
-      (this.currentUser.function !== FunctionEnum.ADMINISTRADOR &&
-        this.currentUser.function !== FunctionEnum.MASTER) ||
-      user.function === FunctionEnum.MASTER;
-
-    const isAdmin =
-      this.currentUser.function === FunctionEnum.ADMINISTRADOR &&
-      user.function === FunctionEnum.ADMINISTRADOR &&
-      user.nickname !== this.currentUser.nickname;
-
-    return geral || isAdmin;
-  }
-
-  getDate(date: string | Date): string {
-    return new Date(date).toLocaleString();
-  }
-
-  private getUsers(): void {
+  private getData(): void {
     this.isLoading = true;
-    this.usersService.getAllUser(paramGenerate(this.pageParams)).subscribe({
+    this.apiService.getAll(paramGenerate(this.pageParams)).subscribe({
       next: response => {
-        this.users = response.data;
+        this.products = response.data;
         this.qtdRegistros = response.totalElements;
 
         if (

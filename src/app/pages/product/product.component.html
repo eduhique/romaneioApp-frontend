@@ -1,0 +1,122 @@
+<div class="info">
+  <h1>Produtos</h1>
+  <h3>Gerenciar produtos</h3>
+</div>
+<div class="card">
+  <p-table
+    #table
+    (onLazyLoad)="onChange($event)"
+    [filterDelay]="0"
+    [globalFilterFields]="[
+      'id',
+      'name',
+      'productType',
+      'createdDate',
+      'lastUpdate'
+    ]"
+    [lazy]="true"
+    [loading]="isLoading"
+    [paginator]="qtdRegistros > 0"
+    [rowHover]="true"
+    [rowsPerPageOptions]="[6, 10, 20]"
+    [rows]="6"
+    [scrollable]="true"
+    [showCurrentPageReport]="true"
+    [totalRecords]="qtdRegistros"
+    [value]="products"
+    currentPageReportTemplate="Mostrando de {first} até {last} de {totalRecords} produtos"
+    dataKey="id"
+    scrollHeight="flex"
+  >
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+        <col style="width: 4rem" />
+        <col style="width: 7.5rem" />
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th pSortableColumn="id">
+          código
+          <p-sortIcon field="id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="name">
+          Nome
+          <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="active">
+          Habilitado
+          <p-sortIcon field="active"></p-sortIcon>
+        </th>
+        <th pSortableColumn="floatPoint">
+          Tipo unitário
+          <p-sortIcon field="floatPoint"></p-sortIcon>
+        </th>
+        <th pSortableColumn="createdDate">
+          Data de Criação
+          <p-sortIcon field="createdDate"></p-sortIcon>
+        </th>
+        <th pSortableColumn="lastUpdate">
+          última Atualização
+          <p-sortIcon field="lastUpdate"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template let-expanded="expanded" let-product pTemplate="body">
+      <tr>
+        <td class="column-text">
+          <button
+            [disabled]="product.productType.productConversionTypes.size === 0"
+            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            [pRowToggler]="product"
+            class="p-button-text p-button-rounded p-button-plain"
+            pButton
+            pRipple
+            type="button"
+          ></button>
+        </td>
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td>
+          <romaneio-function-label
+            [label]="product.active ? 'Ativo' : 'Inativo'"
+          ></romaneio-function-label>
+        </td>
+        <td>{{ product.productType.productPrimitiveType.longName }}</td>
+        <td>{{ getDate(product.createdDate) }}</td>
+        <td>{{ getDate(product.lastUpdate) }}</td>
+        <td>
+          <button
+            (click)="openEditModal(product)"
+            [disabled]="isDisabled()"
+            class="p-button-rounded p-button-warning"
+            icon="pi pi-pencil"
+            pButton
+            pRipple
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template let-product pTemplate="rowexpansion">
+      <tr>
+        <td colspan="8">
+          <romaneio-conversion-table
+            [productType]="product.productType"
+          ></romaneio-conversion-table>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        No total há {{ qtdRegistros }} Tipos primitivos.
+      </div>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">Não produtos cadastrados.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

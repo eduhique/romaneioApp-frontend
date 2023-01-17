@@ -1,7 +1,14 @@
 <div class="dashboard">
   <romaneio-dashboard-card
     [disabled]="isDisabled()"
-    icon="pi pi-fw pi-cog"
+    icon="pi pi-fw pi-box"
+    link="/product"
+    subtitle="Gerenciar produtos."
+    title="Produtos"
+  ></romaneio-dashboard-card>
+  <romaneio-dashboard-card
+    [disabled]="isDisabled()"
+    icon="pi pi-fw pi-wrench"
     link="/setup"
     subtitle="Gerenciar aplicação."
     title="Configurações"

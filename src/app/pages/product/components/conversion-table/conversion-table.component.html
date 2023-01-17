@@ -1,0 +1,50 @@
+<h3>Tabela de conversão de Tipo</h3>
+<p>
+  O tipo padrão é {{ productType.productPrimitiveType?.longName }}.
+  Consequentemente a conversão é 1 para 1, ou seja, 1
+  {{ productType.productPrimitiveType?.shortName }} é equivalente a 1
+  {{ productType.productPrimitiveType?.shortName }}.
+</p>
+<p-table
+  [paginator]="isPaginatorAble()"
+  [rowHover]="true"
+  [rows]="5"
+  [scrollable]="true"
+  [showCurrentPageReport]="true"
+  [totalRecords]="
+    productType.productConversionTypes
+      ? productType.productConversionTypes.size + 1
+      : 0
+  "
+  [value]="getList()"
+  currentPageReportTemplate="Mostrando de {first} até {last} de {totalRecords} produtos"
+  dataKey="id"
+>
+  <ng-template pTemplate="colgroup">
+    <colgroup>
+      <col style="width: 4rem" />
+      <col style="width: 7.5rem" />
+    </colgroup>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>código</th>
+      <th>Nome</th>
+      <th>De</th>
+      <th>Para</th>
+      <th>Nota</th>
+    </tr>
+  </ng-template>
+  <ng-template let-productConversionType pTemplate="body">
+    <tr>
+      <td>{{ productConversionType.id }}</td>
+      <td>{{ productConversionType.targetProductPrimitiveType.longName }}</td>
+      <td>
+        {{ productConversionType.fromPrimary }}
+      </td>
+      <td>{{ productConversionType.toTarget }}</td>
+      <td>{{ getSummaryText(productConversionType) }}</td>
+      .
+    </tr>
+  </ng-template>
+</p-table>

@@ -1,0 +1,20 @@
+@import '../../../../../assets/styles/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.5rem;
+  height: 100%;
+  gap: 1rem;
+
+  > h3 {
+    color: $text-color;
+  }
+
+  > p {
+    color: $text-color-secondary;
+    margin-left: 1rem;
+    font-size: 0.875rem;
+    font-weight: 300;
+  }
+}

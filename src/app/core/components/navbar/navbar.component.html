@@ -1,1 +1,5 @@
-<p-menubar [model]="items"></p-menubar>
+<p-menubar [model]="items">
+  <ng-template pTemplate="end">
+    <h3 class="user-text mr-2">Olá, {{ currentUser.name }}!</h3>
+  </ng-template>
+</p-menubar>

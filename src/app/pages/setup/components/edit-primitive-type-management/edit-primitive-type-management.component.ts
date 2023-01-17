@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { ProductPrimitiveType } from '@shared/models/product-primitive-type';
+import { ProductPrimitiveType } from '@pages/product/models/product-primitive-type';
 
 @Component({
   selector: 'romaneio-edit-primitive-type-management',
