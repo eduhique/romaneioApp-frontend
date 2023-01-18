@@ -19,10 +19,19 @@
       font-size: 1.5rem;
     }
 
-    > h3 {
-      color: $text-color;
-      font-size: 1rem;
-      margin: 1rem;
+    > div {
+      display: flex;
+      justify-content: space-between;
+
+      > h3 {
+        color: $text-color;
+        font-size: 1rem;
+        margin: 1rem;
+      }
+
+      > button {
+        margin-right: 2rem;
+      }
     }
   }
 

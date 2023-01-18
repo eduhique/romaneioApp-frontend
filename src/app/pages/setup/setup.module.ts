@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -58,7 +59,8 @@ import { UsersManagementComponent } from './components/users-management/users-ma
     InputSwitchModule,
     ConfirmDialogModule,
     ToggleButtonModule,
-    SharedModule
+    SharedModule,
+    NgIf
   ],
   providers: [UsersService, ConfirmationService, ProductPrimitiveTypeService]
 })

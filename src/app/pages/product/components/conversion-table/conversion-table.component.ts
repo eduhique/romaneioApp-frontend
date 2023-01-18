@@ -47,7 +47,7 @@ export class ConversionTableComponent {
   isPaginatorAble(): boolean {
     return (
       this.productType.productConversionTypes !== undefined &&
-      this.productType.productConversionTypes.size > 5
+      this.productType.productConversionTypes.length > 5
     );
   }
 }

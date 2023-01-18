@@ -1,0 +1,172 @@
+<p-dialog [(visible)]="modal" [header]="action" [modal]="true">
+  <ng-template pTemplate="content">
+    <span class="field">
+      <label for="name">Nome</label>
+      <input
+        [(ngModel)]="product.name"
+        autofocus
+        id="name"
+        pInputText
+        required
+        type="text"
+      />
+      <small *ngIf="!product.name" class="invalid"> É obrigatório. </small>
+    </span>
+    <div class="field">
+      <label>Habilitado</label>
+      <div class="radio-grid">
+        <div class="radio-type">
+          <p-radioButton
+            [(ngModel)]="product.active"
+            [value]="true"
+            id="category1"
+            name="função"
+          ></p-radioButton>
+          <label for="category1">Sim</label>
+        </div>
+        <div class="radio-type">
+          <p-radioButton
+            [(ngModel)]="product.active"
+            [value]="false"
+            id="category2"
+            name="função"
+          ></p-radioButton>
+          <label for="category2">Não</label>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Tipo principal do Produto</label>
+      <p-dropdown
+        (onChange)="selectType($event)"
+        (onLazyLoad)="onChange($event)"
+        [lazy]="true"
+        [ngModel]="getSelectedPrimary()"
+        [options]="lazyItems"
+        [virtualScrollItemSize]="38"
+        [virtualScroll]="true"
+        emptyMessage="Não há tipos cadastrados"
+        placeholder="Selecione um Tipo"
+      >
+      </p-dropdown>
+    </div>
+    <p-divider></p-divider>
+    <div class="field">
+      <label for="type">Tabela de conversão</label>
+      <div class="content">
+        <p-dropdown
+          (onLazyLoad)="onChange($event)"
+          [(ngModel)]="primitiveType"
+          [disabled]="
+            product.productType?.productPrimitiveType === undefined ||
+            product.productType === undefined
+          "
+          [lazy]="true"
+          [options]="lazyItemsSecondary"
+          [virtualScrollItemSize]="38"
+          [virtualScroll]="true"
+          emptyMessage="Não há tipos cadastrados"
+          id="type"
+          placeholder="Selecione um Tipo"
+        >
+          <ng-template let-options="options" pTemplate="loader">
+            <div class="flex align-items-center py-2 px-3" style="height: 38px">
+              <p-skeleton
+                [width]="options.even ? '60%' : '50%'"
+                height="1rem"
+              ></p-skeleton>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <button
+          (click)="addType()"
+          [disabled]="isDisabled()"
+          class="p-button-success"
+          icon="pi pi-fw pi-plus"
+          label="Adicionar"
+          pButton
+          pRipple
+        ></button>
+      </div>
+      <div class="conversion-table">
+        <p-table
+          [editingRowKeys]="getEditable()"
+          [value]="conversionTypes"
+          dataKey="targetProductPrimitiveType.shortName"
+          editMode="row"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 40%">Tipo</th>
+              <th>de</th>
+              <th>para</th>
+              <th style="width: min-content"></th>
+            </tr>
+          </ng-template>
+          <ng-template let-conversion let-ri="rowIndex" pTemplate="body">
+            <tr [pEditableRow]="conversion">
+              <td>{{ conversion.targetProductPrimitiveType.longName }}</td>
+              <td>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-inputNumber
+                      [(ngModel)]="conversion.fromPrimary"
+                      [minFractionDigits]="2"
+                      [suffix]="getPrimaryTypeString()"
+                      locale="pt-br"
+                      mode="decimal"
+                    ></p-inputNumber>
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-inputNumber
+                      [(ngModel)]="conversion.toTarget"
+                      [minFractionDigits]="2"
+                      [suffix]="
+                        ' ' + conversion.targetProductPrimitiveType.shortName
+                      "
+                      locale="pt-br"
+                      mode="decimal"
+                    ></p-inputNumber>
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td>
+                <button
+                  (click)="deleteRow(ri)"
+                  class="p-button-rounded p-button-text p-button-danger"
+                  icon="pi pi-times"
+                  pButton
+                  pRipple
+                  type="button"
+                ></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      (click)="hiddenModal()"
+      class="p-button-text"
+      icon="pi pi-times"
+      label="Cancelar"
+      pButton
+      pRipple
+    ></button>
+    <button
+      (click)="submitProduct()"
+      [disabled]="!isValid()"
+      icon="pi pi-check"
+      label="Salvar"
+      pButton
+      pRipple
+    ></button>
+  </ng-template>
+</p-dialog>

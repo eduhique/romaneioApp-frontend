@@ -30,8 +30,9 @@ export class ProductComponent implements OnInit {
   public products: Product[];
   public isLoading: boolean;
   public product: Product;
-  public editModal: boolean;
+  public modal: boolean;
   public currentUser: User;
+  public actionLabel: string;
   private lastLazyLoad!: LazyLoadEvent;
   private pageParams: PaginatorParams;
 
@@ -40,6 +41,8 @@ export class ProductComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
+    this.actionLabel = 'Novo Produto';
+
     this.isLoading = false;
     this.qtdRegistros = 11;
 
@@ -50,7 +53,7 @@ export class ProductComponent implements OnInit {
     this.pageParams = defaultParams();
     this.pageParams.size = 6;
 
-    this.editModal = false;
+    this.modal = false;
 
     const userString = localStorage.getItem('currentUser');
 
@@ -61,6 +64,15 @@ export class ProductComponent implements OnInit {
     this.pageParams = defaultParams();
     this.pageParams.size = 6;
     this.getData();
+  }
+
+  verifySubmit(event: Product) {
+    this.modal = false;
+    if (event.id === undefined) {
+      this.submitProduct(event);
+    } else {
+      this.editProduct(event);
+    }
   }
 
   submitProduct(newProduct: Product) {
@@ -92,7 +104,6 @@ export class ProductComponent implements OnInit {
 
   editProduct(product1: Product): void {
     this.isLoading = true;
-    this.editModal = false;
     this.apiService.change(product1.id ? product1.id : 0, product1).subscribe({
       next: () => {
         this.handleNotification(
@@ -115,7 +126,7 @@ export class ProductComponent implements OnInit {
   }
 
   deleteProduct(id: number): void {
-    this.editModal = false;
+    this.modal = false;
     this.confirmationService.confirm({
       message: 'Você tem certeza que deseja apagar esse produto?',
       header: 'Confirmação de Exclusão',
@@ -151,13 +162,20 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  openModal() {
+    this.actionLabel = `Novo Produto`;
+    this.product = { active: true };
+    this.modal = true;
+  }
+
   openEditModal(product1: Product): void {
+    this.actionLabel = `Editar ${product1.name ? product1.name : ''}`;
     this.product = cloneDeep<Product>(product1);
-    this.editModal = true;
+    this.modal = true;
   }
 
   closeEditModal(): void {
-    this.editModal = false;
+    this.modal = false;
     this.product = {};
   }
 

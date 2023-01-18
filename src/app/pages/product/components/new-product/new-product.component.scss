@@ -1,0 +1,73 @@
+@import '../../../../../assets/styles/variables';
+
+:host ::ng-deep {
+  .p-dialog {
+    width: 100%;
+    height: 90vh;
+
+    max-width: 800px;
+
+    .p-dialog-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .field {
+        display: block;
+
+        &:nth-last-of-type(2) {
+          margin-bottom: 0;
+        }
+
+        > label {
+          margin-bottom: 1rem;
+        }
+
+        > input {
+          width: 100%;
+        }
+
+        .p-dropdown {
+          width: 100%;
+        }
+
+        .content {
+          display: flex;
+          gap: 1rem;
+
+          .p-dropdown {
+            width: 300px;
+          }
+        }
+
+        .conversion-table {
+          margin-top: 1rem;
+        }
+
+        .invalid {
+          color: $error-color;
+        }
+
+        .radio-grid {
+          width: 100%;
+          display: flex;
+          gap: 1rem;
+
+          .radio-type {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+          }
+        }
+      }
+    }
+
+    .p-dialog-footer {
+      .p-button.p-button-text {
+        background: transparent;
+        color: $error-color;
+        border-color: transparent;
+      }
+    }
+  }
+}

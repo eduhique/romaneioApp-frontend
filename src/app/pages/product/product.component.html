@@ -1,6 +1,18 @@
 <div class="info">
   <h1>Produtos</h1>
-  <h3>Gerenciar produtos</h3>
+
+  <div>
+    <h3>Gerenciar produtos</h3>
+    <button
+      (click)="openModal()"
+      [disabled]="isDisabled()"
+      class="p-button-success"
+      icon="pi pi-fw pi-plus"
+      label="Novo Produto"
+      pButton
+      pRipple
+    ></button>
+  </div>
 </div>
 <div class="card">
   <p-table
@@ -88,14 +100,25 @@
         <td>{{ getDate(product.createdDate) }}</td>
         <td>{{ getDate(product.lastUpdate) }}</td>
         <td>
-          <button
-            (click)="openEditModal(product)"
-            [disabled]="isDisabled()"
-            class="p-button-rounded p-button-warning"
-            icon="pi pi-pencil"
-            pButton
-            pRipple
-          ></button>
+          <div class="flex gap-3">
+            <button
+              (click)="openEditModal(product)"
+              [disabled]="isDisabled()"
+              class="p-button-rounded p-button-warning"
+              icon="pi pi-pencil"
+              pButton
+              pRipple
+            ></button>
+
+            <button
+              (click)="deleteProduct(product.id)"
+              [disabled]="isDisabled()"
+              class="p-button-rounded p-button-danger"
+              icon="pi pi-trash"
+              pButton
+              pRipple
+            ></button>
+          </div>
         </td>
       </tr>
     </ng-template>
@@ -120,3 +143,20 @@
     </ng-template>
   </p-table>
 </div>
+
+<romaneio-new-product
+  (closeModal)="closeEditModal()"
+  (sendProduct)="verifySubmit($event)"
+  [action]="actionLabel"
+  [modal]="modal"
+  [product]="product"
+></romaneio-new-product>
+
+<p-confirmDialog
+  [blockScroll]="true"
+  [closeOnEscape]="true"
+  [style]="{ width: '450px' }"
+  acceptLabel="Sim"
+  rejectButtonStyleClass="p-button-secondary p-button-text"
+  rejectLabel="Cancelar"
+></p-confirmDialog>

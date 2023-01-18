@@ -4,5 +4,5 @@ import { ProductPrimitiveType } from '@pages/product/models/product-primitive-ty
 export interface ProductType {
   id?: number;
   productPrimitiveType?: ProductPrimitiveType;
-  productConversionTypes?: Set<ProductConversionType>;
+  productConversionTypes?: ProductConversionType[];
 }
