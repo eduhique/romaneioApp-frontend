@@ -1,5 +1,42 @@
 <div class="dashboard">
   <romaneio-dashboard-card
+    icon="pi pi-fw pi-plus"
+    link="/orders"
+    title="Criar Pedido"
+  ></romaneio-dashboard-card>
+  <romaneio-dashboard-card
+    icon="pi pi-fw pi-truck"
+    link="/orders"
+    subtitle="Gerenciar pedidos entregues ou cancelados."
+    title="Pedidos Finalizados"
+  ></romaneio-dashboard-card>
+  <romaneio-dashboard-card
+    icon="pi pi-fw pi-shopping-bag"
+    link="/orders"
+    subtitle="Gerenciar pedidos em faturamento."
+    title="Faturamento"
+  ></romaneio-dashboard-card>
+  <romaneio-dashboard-card
+    icon="pi pi-fw pi-list"
+    link="/orders"
+    subtitle="Gerenciar pedidos realizado, em separação e Faturados."
+    title="Pedidos"
+  ></romaneio-dashboard-card>
+  <romaneio-dashboard-card
+    [disabled]="false"
+    icon="pi pi-fw pi-table"
+    link="/romaneios"
+    subtitle="Gerenciar romaneios."
+    title="Romaneios"
+  ></romaneio-dashboard-card>
+  <romaneio-dashboard-card
+    [disabled]="false"
+    icon="pi pi-fw pi-users"
+    link="/clients"
+    subtitle="Gerenciar clientes."
+    title="Clientes"
+  ></romaneio-dashboard-card>
+  <romaneio-dashboard-card
     [disabled]="isDisabled()"
     icon="pi pi-fw pi-box"
     link="/product"

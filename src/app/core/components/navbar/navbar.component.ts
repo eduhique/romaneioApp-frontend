@@ -31,6 +31,46 @@ export class NavbarComponent {
         routerLink: '/dashboard'
       },
       {
+        label: 'Pedidos',
+        icon: 'pi pi-fw pi-list',
+        items: [
+          {
+            label: 'Criar Pedido',
+            icon: 'pi pi-fw pi-plus',
+            routerLink: '/orders',
+            disabled: true
+          },
+          {
+            label: 'Listar Pedidos',
+            icon: 'pi pi-fw pi-list',
+            routerLink: '/orders',
+            disabled: true
+          },
+          {
+            label: 'Faturamento',
+            icon: 'pi pi-fw pi-shopping-bag',
+            routerLink: '/orders',
+            disabled: true
+          },
+          {
+            label: 'Pedidos Finalizados',
+            icon: 'pi pi-fw pi-truck',
+            routerLink: '/orders',
+            disabled: true
+          }
+        ]
+      },
+      {
+        label: 'Romaneios',
+        icon: 'pi pi-fw pi-table',
+        routerLink: '/romaneios'
+      },
+      {
+        label: 'Clientes',
+        icon: 'pi pi-fw pi-users',
+        routerLink: '/clients'
+      },
+      {
         label: 'Produtos',
         icon: 'pi pi-fw pi-box',
         routerLink: '/product',

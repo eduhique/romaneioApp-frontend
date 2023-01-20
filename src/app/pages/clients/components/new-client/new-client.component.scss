@@ -1,0 +1,44 @@
+@import '../../../../../assets/styles/variables';
+
+:host ::ng-deep {
+  .p-dialog {
+    width: 100%;
+
+    max-width: 500px;
+
+    .p-dialog-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .field {
+        display: block;
+
+        > label {
+          margin-bottom: 1rem;
+        }
+
+        > input,
+        textarea {
+          width: 100%;
+        }
+
+        .p-dropdown {
+          width: 100%;
+        }
+
+        .invalid {
+          color: $error-color;
+        }
+      }
+    }
+
+    .p-dialog-footer {
+      .p-button.p-button-text {
+        background: transparent;
+        color: $error-color;
+        border-color: transparent;
+      }
+    }
+  }
+}

@@ -1,14 +1,14 @@
 <div class="info">
-  <h1>Produtos</h1>
+  <h1>Clientes</h1>
 
   <div>
-    <h3>Gerenciar produtos</h3>
+    <h3>Gerenciar Clientes</h3>
     <button
       (click)="openModal()"
       [disabled]="isDisabled()"
       class="p-button-success"
       icon="pi pi-fw pi-plus"
-      label="Novo Produto"
+      label="Novo Cliente"
       pButton
       pRipple
     ></button>
@@ -22,10 +22,11 @@
     [globalFilterFields]="[
       'id',
       'name',
-      'active',
-      'productType',
+      'district',
+      'clientType',
       'createdDate',
-      'lastUpdate'
+      'lastUpdate',
+      'comments'
     ]"
     [lazy]="true"
     [loading]="isLoading"
@@ -36,20 +37,24 @@
     [scrollable]="true"
     [showCurrentPageReport]="true"
     [totalRecords]="qtdRegistros"
-    [value]="products"
-    currentPageReportTemplate="Mostrando de {first} até {last} de {totalRecords} produtos"
+    [value]="clients"
+    currentPageReportTemplate="Mostrando de {first} até {last} de {totalRecords} clientes"
     dataKey="id"
     scrollHeight="flex"
   >
     <ng-template pTemplate="colgroup">
       <colgroup>
-        <col style="width: 4rem" />
         <col style="width: 7.5rem" />
+        <col />
+        <col />
+        <col />
+        <col style="width: 12rem" />
+        <col style="width: 12.5rem" />
+        <col />
       </colgroup>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th></th>
         <th pSortableColumn="id">
           código
           <p-sortIcon field="id"></p-sortIcon>
@@ -58,13 +63,13 @@
           Nome
           <p-sortIcon field="name"></p-sortIcon>
         </th>
-        <th pSortableColumn="active">
-          Habilitado
-          <p-sortIcon field="active"></p-sortIcon>
+        <th pSortableColumn="district">
+          Bairro
+          <p-sortIcon field="district"></p-sortIcon>
         </th>
-        <th pSortableColumn="productType">
-          Tipo unitário
-          <p-sortIcon field="productType"></p-sortIcon>
+        <th pSortableColumn="clientType">
+          Tipo
+          <p-sortIcon field="clientType"></p-sortIcon>
         </th>
         <th pSortableColumn="createdDate">
           Data de Criação
@@ -74,36 +79,30 @@
           última Atualização
           <p-sortIcon field="lastUpdate"></p-sortIcon>
         </th>
+        <th pSortableColumn="comments">
+          Comentários
+          <p-sortIcon field="comments"></p-sortIcon>
+        </th>
         <th></th>
       </tr>
     </ng-template>
-    <ng-template let-expanded="expanded" let-product pTemplate="body">
+    <ng-template let-client pTemplate="body">
       <tr>
-        <td class="column-text">
-          <button
-            [disabled]="product.productType.productConversionTypes.size === 0"
-            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-            [pRowToggler]="product"
-            class="p-button-text p-button-rounded p-button-plain"
-            pButton
-            pRipple
-            type="button"
-          ></button>
-        </td>
-        <td>{{ product.id }}</td>
-        <td>{{ product.name }}</td>
+        <td>{{ client.id }}</td>
+        <td>{{ client.name }}</td>
+        <td>{{ client.district }}</td>
         <td>
           <romaneio-function-label
-            [label]="product.active ? 'Ativo' : 'Inativo'"
+            [label]="client.clientType"
           ></romaneio-function-label>
         </td>
-        <td>{{ product.productType.productPrimitiveType.longName }}</td>
-        <td>{{ getDate(product.createdDate) }}</td>
-        <td>{{ getDate(product.lastUpdate) }}</td>
+        <td>{{ getDate(client.createdDate) }}</td>
+        <td>{{ getDate(client.lastUpdate) }}</td>
+        <td>{{ client.comments }}</td>
         <td>
           <div class="flex gap-3">
             <button
-              (click)="openEditModal(product)"
+              (click)="openEditModal(client)"
               [disabled]="isDisabled()"
               class="p-button-rounded p-button-warning"
               icon="pi pi-pencil"
@@ -112,7 +111,7 @@
             ></button>
 
             <button
-              (click)="deleteProduct(product.id)"
+              (click)="deleteClient(client.id)"
               [disabled]="isDisabled()"
               class="p-button-rounded p-button-danger"
               icon="pi pi-trash"
@@ -123,36 +122,25 @@
         </td>
       </tr>
     </ng-template>
-    <ng-template let-product pTemplate="rowexpansion">
-      <tr>
-        <td colspan="8">
-          <romaneio-conversion-table
-            [productType]="product.productType"
-          ></romaneio-conversion-table>
-        </td>
-      </tr>
-    </ng-template>
     <ng-template pTemplate="summary">
       <div class="p-d-flex p-ai-center p-jc-between">
-        No total há {{ qtdRegistros }} produtos.
+        No total há {{ qtdRegistros }} clientes.
       </div>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="8">Não há produtos cadastrados.</td>
+        <td colspan="8">Não há clientes cadastrados.</td>
       </tr>
     </ng-template>
   </p-table>
 </div>
-
-<romaneio-new-product
+<romaneio-new-client
   (closeModal)="closeEditModal()"
-  (sendProduct)="verifySubmit($event)"
+  (sendClient)="verifySubmit($event)"
   [action]="actionLabel"
+  [client]="client"
   [modal]="modal"
-  [product]="product"
-></romaneio-new-product>
-
+></romaneio-new-client>
 <p-confirmDialog
   [blockScroll]="true"
   [closeOnEscape]="true"

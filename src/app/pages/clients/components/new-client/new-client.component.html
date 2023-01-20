@@ -1,0 +1,84 @@
+<p-dialog
+  (onHide)="hiddenModal()"
+  [(visible)]="modal"
+  [header]="action"
+  [modal]="true"
+>
+  <ng-template pTemplate="content">
+    <span class="field">
+      <label for="name">Nome</label>
+      <input
+        [(ngModel)]="client.name"
+        autofocus
+        id="name"
+        pInputText
+        required
+        type="text"
+      />
+      <small
+        *ngIf="(submitted || client.id !== undefined) && !client.name"
+        class="invalid"
+      >
+        É obrigatório.
+      </small>
+    </span>
+    <span class="field">
+      <label for="name">Bairro</label>
+      <input
+        [(ngModel)]="client.district"
+        autofocus
+        id="district"
+        pInputText
+        required
+        type="text"
+      />
+      <small
+        *ngIf="(submitted || client.id !== undefined) && !client.district"
+        class="invalid"
+      >
+        É obrigatório.
+      </small>
+    </span>
+    <div class="field">
+      <label>Tipo de cliente</label>
+      <p-dropdown
+        [ngModel]="client.clientType"
+        [options]="clientTypes"
+        emptyMessage="Não há tipos cadastrados"
+        placeholder="Selecione um Tipo"
+      >
+      </p-dropdown>
+    </div>
+    <span class="field">
+      <label for="name">Observações</label>
+      <textarea
+        [(ngModel)]="client.comments"
+        [autoResize]="true"
+        autofocus
+        cols="30"
+        id="comments"
+        pInputTextarea
+        rows="5"
+      ></textarea>
+    </span>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      (click)="hiddenModal()"
+      class="p-button-text"
+      icon="pi pi-times"
+      label="Cancelar"
+      pButton
+      pRipple
+    ></button>
+    <button
+      (click)="submitClient()"
+      [disabled]="!isValid()"
+      icon="pi pi-check"
+      label="Salvar"
+      pButton
+      pRipple
+    ></button>
+  </ng-template>
+</p-dialog>

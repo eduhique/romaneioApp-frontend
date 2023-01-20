@@ -38,6 +38,12 @@
           .p-dropdown {
             width: 300px;
           }
+
+          .p-button {
+            color: #fff;
+            background: $success-color;
+            border-color: $success-color;
+          }
         }
 
         .conversion-table {

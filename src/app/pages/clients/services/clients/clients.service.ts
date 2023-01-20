@@ -5,31 +5,32 @@ import { Observable } from 'rxjs';
 
 import { Page } from '@core/models/page';
 
+import { Client } from '@pages/clients/models/client';
 import { Product } from '@pages/product/models/product';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService {
+export class ClientsService {
   private readonly apiPath: string;
 
   constructor(private http: HttpClient) {
-    this.apiPath = `${environment.apiPath}/products`;
+    this.apiPath = `${environment.apiPath}/clients`;
   }
 
-  create(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiPath, product);
+  create(client: Client): Observable<Client> {
+    return this.http.post<Client>(this.apiPath, client);
   }
 
-  change(id: number, product: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.apiPath}/${id}`, product);
+  change(id: number, client: Client): Observable<Client> {
+    return this.http.put<Client>(`${this.apiPath}/${id}`, client);
   }
 
-  getAll(params?: HttpParams): Observable<Page<Product>> {
-    return this.http.get<Page<Product>>(this.apiPath, { params });
+  getAll(params?: HttpParams): Observable<Page<Client>> {
+    return this.http.get<Page<Client>>(this.apiPath, { params });
   }
 
-  get(id: number): Observable<Product> {
+  get(id: number): Observable<Client> {
     return this.http.get<Product>(`${this.apiPath}/${id}`);
   }
 

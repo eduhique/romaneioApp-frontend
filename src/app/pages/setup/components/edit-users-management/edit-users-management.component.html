@@ -1,4 +1,9 @@
-<p-dialog [(visible)]="modal" [modal]="true" header="Editar Usuário">
+<p-dialog
+  (onHide)="hiddenModal()"
+  [(visible)]="modal"
+  [modal]="true"
+  header="Editar Usuário"
+>
   <ng-template pTemplate="content">
     <span class="field">
       <label for="name">Nome</label>

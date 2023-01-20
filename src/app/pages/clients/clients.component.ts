@@ -13,23 +13,24 @@ import { PaginatorParams } from '@core/models/paginator-params';
 
 import { defaultParams, paramGenerate } from '@shared/utils/helper';
 
-import { Product } from '@pages/product/models/product';
-import { ProductService } from '@pages/product/services/product/product.service';
+import { Client } from '@pages/clients/models/client';
+import { ClientType } from '@pages/clients/models/client-type';
+import { ClientsService } from '@pages/clients/services/clients/clients.service';
 import { FunctionEnum } from '@pages/setup/models/function';
 import { User } from '@pages/setup/models/user';
 
 @Component({
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  templateUrl: './clients.component.html',
+  styleUrls: ['./clients.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ClientsComponent implements OnInit {
   @ViewChild('table')
   table!: Table;
 
   public qtdRegistros: number;
-  public products: Product[];
+  public clients: Client[];
   public isLoading: boolean;
-  public product: Product;
+  public client: Client;
   public modal: boolean;
   public currentUser: User;
   public actionLabel: string;
@@ -37,18 +38,18 @@ export class ProductComponent implements OnInit {
   private pageParams: PaginatorParams;
 
   constructor(
-    private apiService: ProductService,
+    private apiService: ClientsService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
-    this.actionLabel = 'Novo Produto';
+    this.actionLabel = 'Novo Cliente';
 
     this.isLoading = false;
     this.qtdRegistros = 11;
 
-    this.products = [];
+    this.clients = [];
 
-    this.product = {};
+    this.client = {};
 
     this.pageParams = defaultParams();
     this.pageParams.size = 6;
@@ -66,23 +67,40 @@ export class ProductComponent implements OnInit {
     this.getData();
   }
 
-  verifySubmit(event: Product) {
+  openModal() {
+    this.actionLabel = `Novo Cliente`;
+    this.client = { clientType: ClientType.VAREJO };
+    this.modal = true;
+  }
+
+  openEditModal(client1: Client): void {
+    this.actionLabel = `Editar ${client1.name ? client1.name : ''}`;
+    this.client = cloneDeep<Client>(client1);
+    this.modal = true;
+  }
+
+  closeEditModal(): void {
+    this.modal = false;
+    this.client = {};
+  }
+
+  verifySubmit(event: Client) {
     this.modal = false;
     if (event.id === undefined) {
-      this.submitProduct(event);
+      this.submitClient(event);
     } else {
-      this.editProduct(event);
+      this.editClient(event);
     }
   }
 
-  submitProduct(newProduct: Product) {
+  submitClient(newClient: Client) {
     this.isLoading = true;
-    this.apiService.create(newProduct).subscribe({
+    this.apiService.create(newClient).subscribe({
       next: response => {
         this.handleNotification(
           'success',
-          'O Produto foi criado com sucesso',
-          `O produto ${
+          'O Cliente foi criado com sucesso',
+          `O Cliente ${
             response.name ? response.name : ''
           } foi criado com sucesso.`
         );
@@ -102,13 +120,13 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  editProduct(product1: Product): void {
+  editClient(client1: Client): void {
     this.isLoading = true;
-    this.apiService.change(product1.id ? product1.id : 0, product1).subscribe({
+    this.apiService.change(client1.id ? client1.id : 0, client1).subscribe({
       next: () => {
         this.handleNotification(
           'success',
-          'Produto Editado com sucesso',
+          'Cliente Editado com sucesso',
           undefined
         );
         this.getData();
@@ -120,15 +138,15 @@ export class ProductComponent implements OnInit {
           error.message
         );
         this.isLoading = false;
-        this.product = {};
+        this.client = {};
       }
     });
   }
 
-  deleteProduct(id: number): void {
+  deleteClient(id: number): void {
     this.modal = false;
     this.confirmationService.confirm({
-      message: 'Você tem certeza que deseja apagar esse produto?',
+      message: 'Você tem certeza que deseja apagar esse cliente?',
       header: 'Confirmação de Exclusão',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
@@ -137,7 +155,7 @@ export class ProductComponent implements OnInit {
           next: () => {
             this.handleNotification(
               'success',
-              'Produto deletado com sucesso',
+              'Cliente deletado com sucesso',
               undefined
             );
             this.pageParams = defaultParams();
@@ -152,7 +170,7 @@ export class ProductComponent implements OnInit {
               error.message
             );
             this.isLoading = false;
-            this.product = {};
+            this.client = {};
           }
         });
       },
@@ -160,23 +178,6 @@ export class ProductComponent implements OnInit {
         this.closeEditModal();
       }
     });
-  }
-
-  openModal() {
-    this.actionLabel = `Novo Produto`;
-    this.product = { active: true };
-    this.modal = true;
-  }
-
-  openEditModal(product1: Product): void {
-    this.actionLabel = `Editar ${product1.name ? product1.name : ''}`;
-    this.product = cloneDeep<Product>(product1);
-    this.modal = true;
-  }
-
-  closeEditModal(): void {
-    this.modal = false;
-    this.product = {};
   }
 
   isDisabled(): boolean {
@@ -226,7 +227,7 @@ export class ProductComponent implements OnInit {
     this.isLoading = true;
     this.apiService.getAll(paramGenerate(this.pageParams)).subscribe({
       next: response => {
-        this.products = response.data;
+        this.clients = response.data;
         this.qtdRegistros = response.totalElements;
 
         if (

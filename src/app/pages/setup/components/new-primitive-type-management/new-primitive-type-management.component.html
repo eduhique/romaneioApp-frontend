@@ -10,7 +10,12 @@
   </ng-template>
 </p-toolbar>
 
-<p-dialog [(visible)]="modal" [modal]="true" header="Novo tipo primitiva">
+<p-dialog
+  (onHide)="hiddenModal()"
+  [(visible)]="modal"
+  [modal]="true"
+  header="Novo tipo primitiva"
+>
   <ng-template pTemplate="content">
     <span class="field">
       <label for="name">Nome completo</label>

@@ -1,4 +1,9 @@
-<p-dialog [(visible)]="modal" [modal]="true" header="Editar tipo primitiva">
+<p-dialog
+  (onHide)="hiddenModal()"
+  [(visible)]="modal"
+  [modal]="true"
+  header="Editar tipo primitiva"
+>
   <ng-template pTemplate="content">
     <span class="field">
       <label for="name">Nome completo</label>

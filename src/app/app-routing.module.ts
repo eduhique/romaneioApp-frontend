@@ -36,6 +36,20 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'clients',
+    data: { title: 'Clientes' },
+    loadChildren: () =>
+      import('@pages/clients/clients.module').then(m => m.ClientsModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'romaneios',
+    data: { title: 'Romaneios' },
+    loadChildren: () =>
+      import('@pages/romaneios/romaneios.module').then(m => m.RomaneiosModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
