@@ -186,6 +186,13 @@ export class UsersManagementComponent implements OnInit {
     this.userEdit = {};
   }
 
+  isDisabledButton(): boolean {
+    return (
+      this.currentUser.function !== FunctionEnum.ADMINISTRADOR &&
+      this.currentUser.function !== FunctionEnum.MASTER
+    );
+  }
+
   isDisabled(user: User): boolean {
     const geral =
       (this.currentUser.function !== FunctionEnum.ADMINISTRADOR &&

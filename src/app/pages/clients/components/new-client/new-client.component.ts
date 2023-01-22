@@ -57,7 +57,6 @@ export class NewClientComponent {
   submitClient() {
     this.submitted = true;
     if (this.isValid()) {
-      console.log(this.client);
       this.client.name = this.client.name?.trim();
       this.client.district = this.client.district?.trim();
 

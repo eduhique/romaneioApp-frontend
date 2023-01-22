@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { Page } from '@core/models/page';
 
 import { Client } from '@pages/clients/models/client';
-import { Product } from '@pages/product/models/product';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +30,7 @@ export class ClientsService {
   }
 
   get(id: number): Observable<Client> {
-    return this.http.get<Product>(`${this.apiPath}/${id}`);
+    return this.http.get<Client>(`${this.apiPath}/${id}`);
   }
 
   delete(id: number): Observable<unknown> {

@@ -45,7 +45,7 @@ export class ClientsComponent implements OnInit {
     this.actionLabel = 'Novo Cliente';
 
     this.isLoading = false;
-    this.qtdRegistros = 11;
+    this.qtdRegistros = 0;
 
     this.clients = [];
 

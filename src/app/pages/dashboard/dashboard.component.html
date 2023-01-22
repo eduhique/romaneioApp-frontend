@@ -1,7 +1,8 @@
 <div class="dashboard">
   <romaneio-dashboard-card
+    [disabled]="isDisabledOrder()"
     icon="pi pi-fw pi-plus"
-    link="/orders"
+    link="/orders/new"
     title="Criar Pedido"
   ></romaneio-dashboard-card>
   <romaneio-dashboard-card

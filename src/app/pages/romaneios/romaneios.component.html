@@ -1,1 +1,216 @@
-<p>romaneios works!</p>
+<div class="info">
+  <h1>Romaneios</h1>
+</div>
+<div class="card">
+  <p-tabView [(activeIndex)]="tabIndex">
+    <p-tabPanel [disabled]="currentRomaneio.id === undefined">
+      <ng-template pTemplate="header">
+        <i class="pi pi-fw pi-chart-bar"></i>
+        <span>Relatório</span>
+      </ng-template>
+      <div class="romaneio-report">
+        <h3>{{ currentRomaneio.name }}</h3>
+        <div class="romaneio-info">
+          <p><span>Status:</span>{{ currentRomaneio.status }}</p>
+          <p>
+            <span>Data do status:</span
+            >{{ getDate(currentRomaneio.statusDate) }}
+          </p>
+          <p>
+            <span>Data de criação:</span
+            >{{ getDate(currentRomaneio.createdDate) }}
+          </p>
+          <p>
+            <span>Data de última atualização:</span
+            >{{ getDate(currentRomaneio.lastUpdate) }}
+          </p>
+        </div>
+        <p class="romaneio-comments">
+          <span>Comentários</span> {{ currentRomaneio.comments }}
+        </p>
+      </div>
+      <p-accordion>
+        <p-accordionTab [selected]="true" header="Resumo">
+          <romaneio-romaneio-report></romaneio-romaneio-report>
+        </p-accordionTab>
+        <p-accordionTab [disabled]="true" header="Pedidos">
+          Content 2
+        </p-accordionTab>
+      </p-accordion>
+    </p-tabPanel>
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <i class="pi pi-fw pi-list"></i>
+        <span>Gerenciar</span>
+      </ng-template>
+      <div>
+        <h3>Gerenciar Romaneios</h3>
+        <button
+          (click)="openModal()"
+          [disabled]="isDisabled()"
+          class="p-button-success"
+          icon="pi pi-fw pi-plus"
+          label="Novo Romaneio"
+          pButton
+          pRipple
+        ></button>
+      </div>
+      <p-table
+        #table
+        (onLazyLoad)="onChange($event)"
+        [filterDelay]="0"
+        [globalFilterFields]="[
+          'id',
+          'name',
+          'status',
+          'active',
+          'statusDate',
+          'createdDate',
+          'lastUpdate',
+          'comments'
+        ]"
+        [lazy]="true"
+        [loading]="isLoading"
+        [paginator]="qtdRegistros > 0"
+        [rowHover]="true"
+        [rowsPerPageOptions]="[6, 10, 20]"
+        [rows]="6"
+        [scrollable]="true"
+        [showCurrentPageReport]="true"
+        [sortOrder]="-1"
+        [totalRecords]="qtdRegistros"
+        [value]="romaneios"
+        currentPageReportTemplate="Mostrando de {first} até {last} de {totalRecords} clientes"
+        dataKey="id"
+        scrollHeight="flex"
+        sortField="id"
+      >
+        <ng-template pTemplate="colgroup">
+          <colgroup>
+            <col style="width: 7.5rem" />
+            <col />
+            <col />
+            <col />
+            <col style="width: 12rem" />
+            <col style="width: 12rem" />
+            <col style="width: 12.5rem" />
+            <col />
+          </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="id">
+              código
+              <p-sortIcon field="id"></p-sortIcon>
+            </th>
+            <th pSortableColumn="name">
+              Nome
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="active">
+              Ativo
+              <p-sortIcon field="active"></p-sortIcon>
+            </th>
+            <th pSortableColumn="status">
+              Status
+              <p-sortIcon field="status"></p-sortIcon>
+            </th>
+            <th pSortableColumn="statusDate">
+              Data do Status
+              <p-sortIcon field="statusDate"></p-sortIcon>
+            </th>
+            <th pSortableColumn="createdDate">
+              Data de Criação
+              <p-sortIcon field="createdDate"></p-sortIcon>
+            </th>
+            <th pSortableColumn="lastUpdate">
+              última Atualização
+              <p-sortIcon field="lastUpdate"></p-sortIcon>
+            </th>
+            <th pSortableColumn="comments">
+              Comentários
+              <p-sortIcon field="comments"></p-sortIcon>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template let-romaneio pTemplate="body">
+          <tr>
+            <td>{{ romaneio.id }}</td>
+            <td>{{ romaneio.name }}</td>
+            <td>
+              <romaneio-function-label
+                [label]="romaneio.active ? 'Sim' : 'Não'"
+              ></romaneio-function-label>
+            </td>
+            <td>{{ romaneio.status }}</td>
+            <td>{{ getDate(romaneio.statusDate) }}</td>
+            <td>{{ getDate(romaneio.createdDate) }}</td>
+            <td>{{ getDate(romaneio.lastUpdate) }}</td>
+            <td>{{ romaneio.comments }}</td>
+            <td>
+              <div class="flex gap-3">
+                <button
+                  (click)="openEditModal(romaneio)"
+                  [disabled]="isDisabled()"
+                  class="p-button-rounded p-button-warning"
+                  icon="pi pi-pencil"
+                  pButton
+                  pRipple
+                  pTooltip="Editar"
+                  tooltipPosition="top"
+                ></button>
+
+                <button
+                  (click)="deleteRomaneio(romaneio.id)"
+                  [disabled]="isDisabled() || romaneio.active"
+                  class="p-button-rounded p-button-danger"
+                  icon="pi pi-trash"
+                  pButton
+                  pRipple
+                  pTooltip="Deletar"
+                  tooltipPosition="top"
+                ></button>
+                <button
+                  (click)="activeRomaneio(romaneio.id)"
+                  [disabled]="isDisabled() || romaneio.active"
+                  class="p-button-rounded p-button-success"
+                  icon="pi pi-check"
+                  pButton
+                  pRipple
+                  pTooltip="Ativar"
+                  tooltipPosition="top"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            No total há {{ qtdRegistros }} romaneios.
+          </div>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8">Não há romaneios cadastrados.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+<romaneio-new-romaneio
+  (closeModal)="closeEditModal()"
+  (sendRomaneio)="verifySubmit($event)"
+  [action]="actionLabel"
+  [modal]="modal"
+  [romaneio]="romaneio"
+></romaneio-new-romaneio>
+<p-confirmDialog
+  [blockScroll]="true"
+  [closeOnEscape]="true"
+  [style]="{ width: '450px' }"
+  acceptLabel="Sim"
+  rejectButtonStyleClass="p-button-secondary p-button-text"
+  rejectLabel="Cancelar"
+></p-confirmDialog>

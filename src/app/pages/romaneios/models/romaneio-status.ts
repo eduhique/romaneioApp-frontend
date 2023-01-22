@@ -1,0 +1,6 @@
+export enum RomaneioStatus {
+  CRIADO = 'CRIADO',
+  EM_ANDAMENTO = 'EM_ANDAMENTO',
+  FINALIZADO = 'FINALIZADO',
+  CANCELADO = 'CANCELADO'
+}

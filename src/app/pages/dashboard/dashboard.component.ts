@@ -26,4 +26,8 @@ export class DashboardComponent {
       )
     );
   }
+
+  isDisabledOrder() {
+    return this.currentUser.function === FunctionEnum.CAIXA;
+  }
 }

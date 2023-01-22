@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { FunctionEnum } from '@pages/setup/models/function';
 import { User } from '@pages/setup/models/user';
@@ -14,11 +14,15 @@ export class NewUsersManagementComponent {
   public user: User;
   public blockSpace: RegExp;
 
+  @Input()
+  public disabled: boolean;
+
   @Output()
   public sendUser: EventEmitter<User>;
 
   constructor() {
     this.modal = false;
+    this.disabled = true;
     this.submitted = false;
     this.user = {};
     this.blockSpace = /\S/;

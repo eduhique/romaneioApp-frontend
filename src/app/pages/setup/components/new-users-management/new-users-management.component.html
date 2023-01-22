@@ -2,6 +2,7 @@
   <ng-template pTemplate="left">
     <button
       (click)="openModal()"
+      [disabled]="disabled"
       icon="pi pi-plus"
       label="Novo Usuário"
       pButton

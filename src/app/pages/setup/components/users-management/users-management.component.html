@@ -1,4 +1,7 @@
-<romaneio-new-users-management (sendUser)="submitUser($event)">
+<romaneio-new-users-management
+  (sendUser)="submitUser($event)"
+  [disabled]="isDisabledButton()"
+>
 </romaneio-new-users-management>
 <romaneio-edit-users-management
   (closeModal)="closeEditModal()"

@@ -14,6 +14,7 @@ import { TableModule } from 'primeng/table';
 import { SharedModule } from '@shared/shared.module';
 
 import { NewClientComponent } from '@pages/clients/components/new-client/new-client.component';
+import { ClientsService } from '@pages/clients/services/clients/clients.service';
 
 import { ClientsRoutingModule } from './clients-routing.module';
 
@@ -34,6 +35,7 @@ import { ClientsComponent } from './clients.component';
     InputTextModule,
     DropdownModule,
     InputTextareaModule
-  ]
+  ],
+  providers: [ClientsService]
 })
 export class ClientsModule {}

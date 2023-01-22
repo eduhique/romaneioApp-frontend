@@ -37,8 +37,7 @@ export class NavbarComponent {
           {
             label: 'Criar Pedido',
             icon: 'pi pi-fw pi-plus',
-            routerLink: '/orders',
-            disabled: true
+            routerLink: '/orders/new'
           },
           {
             label: 'Listar Pedidos',
