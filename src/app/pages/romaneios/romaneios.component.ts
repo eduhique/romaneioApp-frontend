@@ -10,6 +10,7 @@ import {
 import { Table } from 'primeng/table';
 
 import { PaginatorParams } from '@core/models/paginator-params';
+import { NavigationService } from '@core/services/navigation/navigation.service';
 
 import { defaultParams, paramGenerate } from '@shared/utils/helper';
 
@@ -42,7 +43,8 @@ export class RomaneiosComponent implements OnInit {
   constructor(
     private apiService: RomaneiosService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private navigationService: NavigationService
   ) {
     this.actionLabel = 'Novo Cliente';
 
@@ -80,20 +82,8 @@ export class RomaneiosComponent implements OnInit {
   }
 
   openModal() {
-    const days = [
-      'Domingo',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday'
-    ];
-    const date = new Date();
-
     this.actionLabel = `Novo Romaneio`;
     this.romaneio = {
-      name: days[date.getDay()],
       active: false,
       status: RomaneioStatus.CRIADO
     };
@@ -272,8 +262,7 @@ export class RomaneiosComponent implements OnInit {
             this.pageParams.size = 6;
             this.pageParams.direction = 'desc';
             this.getData();
-            this.getRomaneioLocal();
-            this.tabIndex = 0;
+            this.getRomaneioActive();
           },
           error: (error: HttpErrorResponse) => {
             this.handleNotification(
@@ -289,12 +278,16 @@ export class RomaneiosComponent implements OnInit {
     });
   }
 
-  private getRomaneioLocal() {
-    const romaneioString = localStorage.getItem('romaneio');
-
-    this.currentRomaneio = romaneioString
-      ? (JSON.parse(romaneioString) as Romaneio)
-      : {};
+  private getRomaneioActive() {
+    this.navigationService.sendLoading(true);
+    this.apiService.findActive().subscribe({
+      next: response => {
+        this.currentRomaneio = response;
+        this.tabIndex = 0;
+        this.navigationService.sendLoading(false);
+      },
+      error: () => this.navigationService.sendLoading(false)
+    });
   }
 
   private getData(): void {

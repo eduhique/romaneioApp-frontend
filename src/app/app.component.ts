@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { AuthorizationService } from '@core/services/authorization/authorization.service';
 import { NavigationService } from '@core/services/navigation/navigation.service';
 
+import { RomaneiosService } from '@pages/romaneios/service/romaneios/romaneios.service';
+
 @Component({
   selector: 'romaneio-root',
   templateUrl: './app.component.html',
@@ -16,7 +18,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private navigationService: NavigationService,
-    private authorizationService: AuthorizationService
+    private authorizationService: AuthorizationService,
+    private romaneioService: RomaneiosService
   ) {
     this.loading = false;
     this.authenticated = false;
@@ -34,6 +37,10 @@ export class AppComponent implements OnInit, OnDestroy {
         isAuthenticated => (this.authenticated = isAuthenticated)
       )
     );
+
+    this.romaneioService.findActive().subscribe({
+      error: () => localStorage.removeItem('romaneio')
+    });
   }
 
   ngOnDestroy() {

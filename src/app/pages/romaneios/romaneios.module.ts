@@ -9,6 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { RippleModule } from 'primeng/ripple';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
@@ -22,13 +23,15 @@ import { RomaneiosRoutingModule } from './romaneios-routing.module';
 
 import { RomaneiosComponent } from '../romaneios/romaneios.component';
 import { NewRomaneioComponent } from './components/new-romaneio/new-romaneio.component';
+import { ProductClientReportsListComponent } from './components/product-client-reports-list/product-client-reports-list.component';
 import { RomaneioReportComponent } from './components/romaneio-report/romaneio-report.component';
 
 @NgModule({
   declarations: [
     RomaneiosComponent,
     NewRomaneioComponent,
-    RomaneioReportComponent
+    RomaneioReportComponent,
+    ProductClientReportsListComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +48,8 @@ import { RomaneioReportComponent } from './components/romaneio-report/romaneio-r
     DropdownModule,
     InputTextareaModule,
     AccordionModule,
-    TooltipModule
+    TooltipModule,
+    ProgressBarModule
   ],
   providers: [RomaneiosService]
 })

@@ -50,6 +50,13 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'orders',
+    data: { title: 'Pedidos' },
+    loadChildren: () =>
+      import('@pages/order/order.module').then(m => m.OrderModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

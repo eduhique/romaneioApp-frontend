@@ -1,0 +1,163 @@
+<div class="info">
+  <h1>Pedidos</h1>
+
+  <div>
+    <h3>Gerenciar pedidos</h3>
+    <button
+      class="p-button-success"
+      icon="pi pi-fw pi-plus"
+      label="Novo Pedido"
+      pButton
+      pRipple
+      routerLink="/orders/new"
+      routerLinkActive="active"
+    ></button>
+  </div>
+</div>
+<div class="card">
+  <p-table
+    #table
+    (onLazyLoad)="onChange($event)"
+    (onRowExpand)="onTabView($event)"
+    [filterDelay]="0"
+    [globalFilterFields]="[
+      'id',
+      'client.name',
+      'romaneio.name',
+      'status',
+      'user.nickname'
+    ]"
+    [lazy]="true"
+    [loading]="isLoading"
+    [paginator]="qtdRegistros > 0"
+    [rowExpandMode]="'single'"
+    [rowHover]="true"
+    [rowsPerPageOptions]="[6, 10, 20]"
+    [rows]="6"
+    [scrollable]="true"
+    [showCurrentPageReport]="true"
+    [totalRecords]="qtdRegistros"
+    [value]="orders"
+    currentPageReportTemplate="Mostrando de {first} até {last} de {totalRecords} Pedidos"
+    dataKey="id"
+    scrollHeight="flex"
+  >
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+        <col style="width: 4rem" />
+        <col style="width: 7.5rem" />
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th pSortableColumn="id">
+          código
+          <p-sortIcon field="id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="client.name">
+          Cliente
+          <p-sortIcon field="client.name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="romaneio.name">
+          Romaneio
+          <p-sortIcon field="romaneio.name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="status">
+          Status
+          <p-sortIcon field="status"></p-sortIcon>
+        </th>
+        <th pSortableColumn="user.nickname">
+          Usuário
+          <p-sortIcon field="user.nickname"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template let-expanded="expanded" let-order pTemplate="body">
+      <tr>
+        <td class="column-text">
+          <button
+            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            [pRowToggler]="order"
+            class="p-button-text p-button-rounded p-button-plain"
+            pButton
+            pRipple
+            type="button"
+          ></button>
+        </td>
+        <td>{{ order.id }}</td>
+        <td>{{ order.client.name }}</td>
+        <td>{{ order.romaneio.name }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.user.name }}</td>
+        <td>
+          <div class="flex gap-3">
+            <button
+              (click)="changeStatus('SEPARANDO', order)"
+              [disabled]="
+                order.status === 'SEPARANDO' || order.status !== 'REALIZADO'
+              "
+              [pTooltip]="'Separar Pedido'"
+              class="p-button-rounded"
+              icon="pi pi-check"
+              pButton
+              pRipple
+              tooltipPosition="top"
+            ></button>
+            <button
+              (click)="changeStatus('ENTREGUE', order)"
+              [disabled]="
+                order.status === 'ENTREGUE' || order.status !== 'SEPARANDO'
+              "
+              [pTooltip]="'Entregar Pedido'"
+              class="p-button-rounded p-button-success"
+              icon="pi pi-truck"
+              pButton
+              pRipple
+              tooltipPosition="top"
+            ></button>
+
+            <button
+              (click)="delete(order.id)"
+              [pTooltip]="'Apagar Pedido'"
+              class="p-button-rounded p-button-danger"
+              icon="pi pi-trash"
+              pButton
+              pRipple
+              tooltipPosition="top"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template let-order pTemplate="rowexpansion">
+      <tr>
+        <td colspan="8">
+          <romaneio-order-item-list
+            [orderItemList]="order.orderItems"
+          ></romaneio-order-item-list>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        No total há {{ qtdRegistros }} Pedidos.
+      </div>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">Não há Pedidos cadastrados.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-confirmDialog
+  [blockScroll]="true"
+  [closeOnEscape]="true"
+  [style]="{ width: '450px' }"
+  acceptLabel="Sim"
+  rejectButtonStyleClass="p-button-secondary p-button-text"
+  rejectLabel="Cancelar"
+></p-confirmDialog>

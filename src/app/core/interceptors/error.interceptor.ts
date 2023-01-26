@@ -23,13 +23,16 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 403) {
           this.router.navigateByUrl('/error/forbidden');
-        } else if (error.status === 404) {
+        } else if (
+          error.status === 404 &&
+          !error.message.includes('romaneios/active')
+        ) {
           this.handleNotification(
             'warn',
             `${error.status} - ${error.statusText}`,
             error.message
           );
-        } else {
+        } else if (!error.message.includes('romaneios/active')) {
           this.handleNotification(
             'error',
             `${error.status} - ${error.statusText}`,

@@ -31,10 +31,12 @@
       </div>
       <p-accordion>
         <p-accordionTab [selected]="true" header="Resumo">
-          <romaneio-romaneio-report></romaneio-romaneio-report>
+          <romaneio-romaneio-report
+            [romaneio]="currentRomaneio"
+          ></romaneio-romaneio-report>
         </p-accordionTab>
         <p-accordionTab [disabled]="true" header="Pedidos">
-          Content 2
+          Em breve...
         </p-accordionTab>
       </p-accordion>
     </p-tabPanel>

@@ -1,0 +1,43 @@
+<p-table
+  [filterDelay]="0"
+  [globalFilterFields]="['client.id', 'client.name', 'orderItem.amount']"
+  [rowHover]="true"
+  [scrollable]="true"
+  [totalRecords]="productClientReports.length"
+  [value]="productClientReports"
+  dataKey="client.id"
+  scrollHeight="660px"
+  selectionMode="single"
+>
+  <ng-template pTemplate="colgroup">
+    <colgroup>
+      <col style="width: 7.5rem" />
+    </colgroup>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="client.id">
+        código
+        <p-sortIcon field="client.id"></p-sortIcon>
+      </th>
+      <th pSortableColumn="client.name">
+        Cliente
+        <p-sortIcon field="client.name"></p-sortIcon>
+      </th>
+      <th pSortableColumn="orderItem.amount">
+        Quantidade
+        <p-sortIcon field="orderItem.amount"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template let-client pTemplate="body">
+    <tr>
+      <td>{{ client.client.id }}</td>
+      <td>{{ client.client.name }}</td>
+      <td>
+        {{ client.orderItem.amount }}
+        {{ client.orderItem.productPrimitiveType.shortName }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

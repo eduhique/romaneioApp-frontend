@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AuthorizationService } from '@core/services/authorization/authorization.service';
 import { NavigationService } from '@core/services/navigation/navigation.service';
 
+import { RomaneiosService } from '@pages/romaneios/service/romaneios/romaneios.service';
+
 @Component({
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -15,6 +17,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authorizationService: AuthorizationService,
     private navigationService: NavigationService,
+    private romaneioService: RomaneiosService,
     private router: Router
   ) {
     this.username = '';
@@ -36,6 +39,9 @@ export class LoginComponent implements OnInit {
       this.authorizationService.signIn(this.username, this.password).subscribe({
         next: () => {
           this.navigationService.sendLoading(false);
+          this.romaneioService.findActive().subscribe({
+            error: () => localStorage.removeItem('romaneio')
+          });
           this.router.navigate(['dashboard']);
         },
         error: () => {

@@ -1,1 +1,86 @@
-<p>romaneio-report works!</p>
+<div *ngIf="!loading" class="content-table">
+  <div class="report-info">
+    <h3>Sub Totais -></h3>
+    <ng-container *ngFor="let total of getTotals()" class="report-info">
+      <p>
+        {{ total.productPrimitiveType.longName }}:
+        {{ total.quantity.toFixed(2) }}
+        {{ total.productPrimitiveType.shortName }}
+      </p>
+    </ng-container>
+  </div>
+  <p-table
+    [filterDelay]="0"
+    [globalFilterFields]="['product.id', 'product.name', 'quantity']"
+    [rowHover]="true"
+    [scrollable]="true"
+    [totalRecords]="romaneioReport ? romaneioReport.productReports.length : 0"
+    [value]="romaneioReport ? romaneioReport.productReports : []"
+    dataKey="product.id"
+    scrollHeight="660px"
+    selectionMode="single"
+  >
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+        <col style="width: 4rem" />
+        <col style="width: 7.5rem" />
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th pSortableColumn="product.id">
+          código
+          <p-sortIcon field="product.id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="product.name">
+          Produto
+          <p-sortIcon field="product.name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="quantity">
+          Quantidade
+          <p-sortIcon field="quantity"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template let-expanded="expanded" let-product pTemplate="body">
+      <tr>
+        <td class="column-text">
+          <button
+            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            [pRowToggler]="product"
+            class="p-button-text p-button-rounded p-button-plain"
+            pButton
+            pRipple
+            type="button"
+          ></button>
+        </td>
+        <td>{{ product.product.id }}</td>
+        <td>{{ product.product.name }}</td>
+        <td>
+          {{ product.quantity.toFixed(2) }}
+          {{ product.product.productType.productPrimitiveType.shortName }}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template let-product pTemplate="rowexpansion">
+      <tr>
+        <td colspan="5">
+          <romaneio-product-client-reports-list
+            [productClientReports]="product.productClientReports"
+          ></romaneio-product-client-reports-list>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        No total há
+        {{ romaneioReport ? romaneioReport.productReports.length : 0 }}
+        produtos.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+<div *ngIf="loading" class="loading-report">
+  <p-progressBar mode="indeterminate"></p-progressBar>
+</div>

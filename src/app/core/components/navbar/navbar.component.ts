@@ -42,8 +42,7 @@ export class NavbarComponent {
           {
             label: 'Listar Pedidos',
             icon: 'pi pi-fw pi-list',
-            routerLink: '/orders',
-            disabled: true
+            routerLink: '/orders'
           },
           {
             label: 'Faturamento',
@@ -72,8 +71,7 @@ export class NavbarComponent {
       {
         label: 'Produtos',
         icon: 'pi pi-fw pi-box',
-        routerLink: '/product',
-        disabled: this.isDisabled()
+        routerLink: '/product'
       },
       {
         label: 'Configurações',

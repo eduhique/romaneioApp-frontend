@@ -1,0 +1,28 @@
+:host ::ng-deep {
+  display: flex;
+  flex-direction: column;
+
+  .report-info {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+
+    > p {
+      font-size: 1rem;
+    }
+  }
+
+  .loading-report {
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .p-progressbar {
+      width: 45vw;
+      height: 10px;
+    }
+  }
+}

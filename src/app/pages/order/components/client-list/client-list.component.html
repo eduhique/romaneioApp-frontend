@@ -1,0 +1,129 @@
+<p-dialog
+  (onHide)="hiddenModal()"
+  [(visible)]="modal"
+  [modal]="true"
+  header="Selecionar Cliente"
+>
+  <ng-template pTemplate="content">
+    <div class="search">
+      <div class="field">
+        <label for="name">Pesquisar por nome</label>
+        <input
+          (keydown)="handleKey($event)"
+          [(ngModel)]="searchParam"
+          autofocus
+          id="name"
+          pInputText
+          type="text"
+        />
+      </div>
+      <div>
+        <button
+          (click)="clear()"
+          [disabled]="isCleanable()"
+          class="p-button-danger"
+          icon="pi pi-times"
+          pButton
+          pRipple
+        ></button>
+        <button
+          (click)="search()"
+          [disabled]="
+            searchParam === undefined ||
+            searchParam === '' ||
+            this.searchParam === this.lastSearchParam
+          "
+          icon="pi pi-search"
+          label="Pesquisar"
+          pButton
+          pRipple
+        ></button>
+      </div>
+    </div>
+    <p class="selection"><span>Selecionado:</span>{{ getSelectionLabel() }}</p>
+    <p-divider></p-divider>
+
+    <div class="content-table">
+      <p-table
+        #table
+        (onLazyLoad)="onChange($event)"
+        [(selection)]="selectedClient"
+        [filterDelay]="0"
+        [globalFilterFields]="['id', 'name', 'district', 'clientType']"
+        [lazy]="true"
+        [loading]="isLoading"
+        [paginator]="true"
+        [rowHover]="true"
+        [rows]="5"
+        [scrollable]="true"
+        [showCurrentPageReport]="true"
+        [totalRecords]="qtdRegistros"
+        [value]="clients"
+        currentPageReportTemplate="Mostrando de {first} até {last} de {totalRecords} Clientes"
+        dataKey="id"
+        scrollHeight="660px"
+        selectionMode="single"
+      >
+        <ng-template pTemplate="colgroup">
+          <colgroup>
+            <col style="width: fit-content" />
+          </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+            <th pSortableColumn="id">
+              código
+              <p-sortIcon field="id"></p-sortIcon>
+            </th>
+            <th pSortableColumn="name">
+              Nome
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="district">
+              Bairro
+              <p-sortIcon field="district"></p-sortIcon>
+            </th>
+            <th pSortableColumn="clientType">
+              Tipo
+              <p-sortIcon field="clientType"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template let-client pTemplate="body">
+          <tr [pSelectableRow]="client">
+            <td>
+              <p-tableCheckbox [value]="client"></p-tableCheckbox>
+            </td>
+            <td>{{ client.id }}</td>
+            <td>{{ client.name }}</td>
+            <td>{{ client.district }}</td>
+            <td>
+              <romaneio-function-label
+                [label]="client.clientType"
+              ></romaneio-function-label>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      (click)="hiddenModal()"
+      class="p-button-text"
+      icon="pi pi-times"
+      label="Cancelar"
+      pButton
+      pRipple
+    ></button>
+    <button
+      (click)="onSelect()"
+      icon="pi pi-check"
+      label="Selecionar"
+      pButton
+      pRipple
+    ></button>
+  </ng-template>
+</p-dialog>

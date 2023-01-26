@@ -18,9 +18,10 @@
     title="Faturamento"
   ></romaneio-dashboard-card>
   <romaneio-dashboard-card
+    [disabled]="false"
     icon="pi pi-fw pi-list"
     link="/orders"
-    subtitle="Gerenciar pedidos realizado, em separação e Faturados."
+    subtitle="Gerenciar pedidos."
     title="Pedidos"
   ></romaneio-dashboard-card>
   <romaneio-dashboard-card
@@ -38,7 +39,7 @@
     title="Clientes"
   ></romaneio-dashboard-card>
   <romaneio-dashboard-card
-    [disabled]="isDisabled()"
+    [disabled]="false"
     icon="pi pi-fw pi-box"
     link="/product"
     subtitle="Gerenciar produtos."

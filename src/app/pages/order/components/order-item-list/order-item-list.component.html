@@ -1,0 +1,42 @@
+<p-table
+  [filterDelay]="0"
+  [globalFilterFields]="['id', 'product.name', 'amount']"
+  [rowHover]="true"
+  [scrollable]="true"
+  [showCurrentPageReport]="true"
+  [totalRecords]="orderItemList.length"
+  [value]="orderItemList"
+  dataKey="id"
+  scrollHeight="flex"
+>
+  <ng-template pTemplate="colgroup">
+    <colgroup>
+      <col style="width: 7.5rem" />
+    </colgroup>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="id">
+        código
+        <p-sortIcon field="id"></p-sortIcon>
+      </th>
+      <th pSortableColumn="product.name">
+        Produto
+        <p-sortIcon field="product.name"></p-sortIcon>
+      </th>
+      <th pSortableColumn="amount">
+        Quantidade
+        <p-sortIcon field="amount"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template let-item pTemplate="body">
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.product.name }}</td>
+      <td>
+        {{ item.amount.toFixed(2) }} {{ item.productPrimitiveType.shortName }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

@@ -1,0 +1,68 @@
+@import '../../../assets/styles/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  height: 100%;
+  gap: 1rem;
+
+  background: $surface-ground;
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    > h1 {
+      color: $gray-900;
+      font-size: 1.5rem;
+    }
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+
+      > h3 {
+        color: $text-color;
+        font-size: 1rem;
+        margin: 1rem;
+      }
+
+      > button {
+        margin-right: 1rem;
+      }
+
+      .p-button {
+        color: #fff;
+        background: $success-color;
+        border-color: $success-color;
+      }
+    }
+  }
+
+  .card {
+    padding: 1rem;
+
+    background: $surface-card;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2),
+      0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+    border-radius: $border-radius;
+  }
+
+  @media screen and (min-width: 768px) {
+    .info {
+      > h1 {
+        font-size: 2.5rem;
+      }
+
+      > h3 {
+        font-size: 1.25rem;
+      }
+    }
+    .card {
+      max-height: 690px;
+    }
+  }
+}

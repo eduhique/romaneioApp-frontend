@@ -1,0 +1,176 @@
+<div class="card">
+  <h1>Novo Pedido</h1>
+
+  <div class="order-info">
+    <div class="order-prop">
+      <p><span>Romaneio:</span>{{ getSelectionLabel(order.romaneio) }}</p>
+      <button
+        (click)="romaneioModal = true"
+        label="Selecionar"
+        pButton
+        pRipple
+      ></button>
+    </div>
+
+    <div class="order-prop">
+      <p><span>Cliente:</span>{{ getSelectionLabel(order.client) }}</p>
+      <button
+        (click)="clientModal = true"
+        label="Selecionar"
+        pButton
+        pRipple
+      ></button>
+    </div>
+
+    <div class="order-prop">
+      <p><span>Conferente:</span>{{ order.user?.name }}</p>
+      <button
+        (click)="userModal = true"
+        label="Selecionar"
+        pButton
+        pRipple
+      ></button>
+    </div>
+  </div>
+  <div class="order-actions">
+    <button
+      (click)="clearOrderItems()"
+      [disabled]="order.orderItems.length === 0"
+      class="p-button-secondary p-button-outlined p-button-warning"
+      label="Limpar Pedido"
+      pButton
+      pRipple
+    ></button>
+    <button
+      (click)="sendOrder()"
+      [disabled]="!isValid()"
+      class="p-button-success"
+      label="Criar Pedido"
+      pButton
+      pRipple
+    ></button>
+  </div>
+</div>
+<div class="card">
+  <button
+    (click)="productModal = true"
+    class="p-button-success"
+    icon="pi pi-fw pi-plus"
+    label="Adicionar produto"
+    pButton
+    pRipple
+  ></button>
+  <p-table
+    [editingRowKeys]="getEditable()"
+    [globalFilterFields]="['item.product.id', 'item.product.name', 'amount']"
+    [rowHover]="true"
+    [scrollable]="true"
+    [totalRecords]="order.orderItems.length"
+    [value]="order.orderItems"
+    dataKey="product.id"
+    editMode="row"
+  >
+    <ng-template pTemplate="colgroup">
+      <colgroup>
+        <col style="width: 7.5rem" />
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id">
+          código
+          <p-sortIcon field="id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="id">
+          Produto
+          <p-sortIcon field="id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="id">
+          Quantidade
+          <p-sortIcon field="id"></p-sortIcon>
+        </th>
+        <th>Unidade</th>
+        <th style="width: min-content"></th>
+      </tr>
+    </ng-template>
+    <ng-template let-item let-ri="rowIndex" pTemplate="body">
+      <tr [pEditableRow]="item">
+        <td>{{ item.product.id }}</td>
+        <td>{{ item.product.name }}</td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-inputNumber
+                [(ngModel)]="item.amount"
+                [minFractionDigits]="
+                  item.productPrimitiveType.floatPoint ? 2 : 0
+                "
+                locale="pt-br"
+                mode="decimal"
+              ></p-inputNumber>
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-dropdown
+                (onChange)="handleChange(ri)"
+                [(ngModel)]="item.productPrimitiveType"
+                [options]="getTypes(item)"
+                appendTo="body"
+                optionLabel="longName"
+              ></p-dropdown>
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <button
+            (click)="deleteRow(ri)"
+            class="p-button-rounded p-button-text p-button-danger"
+            icon="pi pi-times"
+            pButton
+            pRipple
+            type="button"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<romaneio-user-list
+  (closeModal)="closeUserModal()"
+  (userSelection)="onUserSelect($event)"
+  [modal]="userModal"
+  [selectedUser]="order.user"
+></romaneio-user-list>
+
+<romaneio-romaneio-list
+  (closeModal)="closeRomaneioModal()"
+  (romaneioSelection)="onRomaneioSelect($event)"
+  [modal]="romaneioModal"
+  [selectedRomaneio]="order.romaneio"
+></romaneio-romaneio-list>
+
+<romaneio-client-list
+  (clientSelection)="onClientSelect($event)"
+  (closeModal)="closeClientModal()"
+  [modal]="clientModal"
+  [selectedClient]="order.client"
+></romaneio-client-list>
+
+<romaneio-product-list
+  (closeModal)="closeProductModal()"
+  (productEventEmitter)="onProductSelect($event)"
+  [modal]="productModal"
+></romaneio-product-list>
+
+<p-confirmDialog
+  [blockScroll]="true"
+  [closeOnEscape]="true"
+  [style]="{ width: '450px' }"
+  acceptLabel="Sim"
+  rejectButtonStyleClass="p-button-secondary p-button-text"
+  rejectLabel="Cancelar"
+></p-confirmDialog>

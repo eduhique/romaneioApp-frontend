@@ -6,6 +6,7 @@ import { map, Observable } from 'rxjs';
 import { Page } from '@core/models/page';
 
 import { Romaneio } from '@pages/romaneios/models/romaneio';
+import { RomaneioReport } from '@pages/romaneios/models/romaneio-report';
 import { RomaneioStatus } from '@pages/romaneios/models/romaneio-status';
 
 @Injectable({
@@ -69,5 +70,9 @@ export class RomaneiosService {
         this.findActive().subscribe();
       })
     );
+  }
+
+  report(id: number): Observable<RomaneioReport> {
+    return this.http.get<RomaneioReport>(`${this.apiPath}/${id}/report`);
   }
 }

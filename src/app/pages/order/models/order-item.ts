@@ -2,17 +2,17 @@ import { Product } from '@pages/product/models/product';
 import { ProductPrimitiveType } from '@pages/product/models/product-primitive-type';
 
 export interface OrderItem {
-  id: number;
+  id?: number;
 
-  product: Product;
+  product?: Product;
 
-  amount: number;
+  amount?: number;
 
-  productPrimitiveType: ProductPrimitiveType;
+  productPrimitiveType?: ProductPrimitiveType;
 
-  lastUpdate: Date;
+  lastUpdate?: Date;
 
-  detached: boolean;
+  detached?: boolean;
 
-  conferred: boolean;
+  conferred?: boolean;
 }

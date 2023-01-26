@@ -1,0 +1,158 @@
+@import '../../../../../assets/styles/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 2rem;
+  height: 100%;
+  gap: 1rem;
+
+  background: $surface-ground;
+
+  .card {
+    padding: 1rem;
+
+    background: $surface-card;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+    border-radius: $border-radius;
+
+    > h1 {
+      color: $gray-900;
+      font-size: 1.5rem;
+
+      margin-bottom: 1rem;
+    }
+
+    > button {
+      margin-bottom: 1rem;
+    }
+
+    .p-button-success {
+      color: #fff;
+      background: $success-color;
+      border-color: $success-color;
+    }
+
+    .order-info {
+      display: block;
+
+      .order-prop {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+
+        background: $gray-100;
+        border: 1px solid $gray-200;
+        border-radius: $border-radius;
+
+        > p {
+          width: 100%;
+          font-size: 1rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+          padding: 0.5rem 0.5rem 1rem 0.5rem;
+
+          > span {
+            display: block;
+            margin-bottom: 0.5rem;
+            margin-right: 0.5rem;
+            font-size: 1rem;
+            font-weight: 900;
+          }
+        }
+
+        .p-button {
+          width: 100%;
+          padding: 0.5rem 1rem;
+        }
+      }
+    }
+
+    .order-actions {
+      padding-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .p-button {
+        width: 100%;
+      }
+
+      .p-button-success {
+        color: #fff;
+        background: $success-color;
+        border-color: $success-color;
+      }
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .info {
+      > h3 {
+        font-size: 1.25rem;
+      }
+    }
+    .card {
+      max-height: 690px;
+
+      > h1 {
+        font-size: 2.5rem;
+        padding-left: 1rem;
+        padding-bottom: 1rem;
+      }
+
+      .order-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        padding: 0 3rem;
+
+        .order-prop {
+          display: flex;
+          align-items: center;
+          margin-bottom: 0;
+
+          padding-left: 1rem;
+
+          > p {
+            display: flex;
+            font-size: 1.25rem;
+
+            > span {
+              margin-bottom: 0;
+              margin-right: 0.5rem;
+              font-size: 1.25rem;
+              font-weight: 900;
+            }
+          }
+
+          .p-button {
+            width: 150px;
+            padding: 0.75rem 1.25rem;
+            font-size: 1.25rem;
+          }
+        }
+      }
+
+      .order-actions {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        justify-content: flex-end;
+
+        margin-right: 2rem;
+
+        .p-button {
+          width: fit-content;
+          padding: 0.75rem 1.25rem;
+          font-size: 1.25rem;
+        }
+      }
+    }
+  }
+}
